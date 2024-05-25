@@ -33,8 +33,7 @@ public class SignIn extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jPanel1 = new model.PanelRound();
-        ;
+        panelRound1 = new components.PanelRound();
         jLabel1 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jTextField1 = new javax.swing.JTextField();
@@ -47,10 +46,15 @@ public class SignIn extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("NexGen Login");
+        setMaximumSize(new java.awt.Dimension(1248, 832));
+        setResizable(false);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jPanel1.setBackground(new java.awt.Color(9, 9, 11));
-        jPanel1.setForeground(new java.awt.Color(255, 255, 255));
+        panelRound1.setBackground(new java.awt.Color(9, 9, 11));
+        panelRound1.setRoundBottomLeft(8);
+        panelRound1.setRoundBottomRight(8);
+        panelRound1.setRoundTopLeft(8);
+        panelRound1.setRoundTopRight(8);
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
@@ -58,12 +62,6 @@ public class SignIn extends javax.swing.JFrame {
 
         jLabel3.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
         jLabel3.setText("Sign in to continue NexGen");
-
-        jPasswordField1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jPasswordField1ActionPerformed(evt);
-            }
-        });
 
         jLabel4.setText("Username");
 
@@ -77,26 +75,26 @@ public class SignIn extends javax.swing.JFrame {
             }
         });
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
+        javax.swing.GroupLayout panelRound1Layout = new javax.swing.GroupLayout(panelRound1);
+        panelRound1.setLayout(panelRound1Layout);
+        panelRound1Layout.setHorizontalGroup(
+            panelRound1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelRound1Layout.createSequentialGroup()
                 .addGap(150, 150, 150)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGroup(panelRound1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jLabel5)
                     .addComponent(jLabel4)
-                    .addComponent(jPasswordField1, javax.swing.GroupLayout.DEFAULT_SIZE, 225, Short.MAX_VALUE)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.DEFAULT_SIZE, 225, Short.MAX_VALUE)
+                    .addComponent(jPasswordField1)
+                    .addComponent(jTextField1)
                     .addComponent(jLabel3)
                     .addComponent(jLabel1)
-                    .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, 225, Short.MAX_VALUE))
+                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 225, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(150, Short.MAX_VALUE))
         );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(55, 55, 55)
+        panelRound1Layout.setVerticalGroup(
+            panelRound1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelRound1Layout.createSequentialGroup()
+                .addContainerGap(54, Short.MAX_VALUE)
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel3)
@@ -110,10 +108,10 @@ public class SignIn extends javax.swing.JFrame {
                 .addComponent(jPasswordField1, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(42, 42, 42)
                 .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(54, Short.MAX_VALUE))
+                .addGap(55, 55, 55))
         );
 
-        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(377, 279, 525, 424));
+        getContentPane().add(panelRound1, new org.netbeans.lib.awtextra.AbsoluteConstraints(377, 279, 525, 424));
 
         jLabel7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/image/logoWhite.png"))); // NOI18N
         getContentPane().add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(525, 128, 230, 50));
@@ -131,33 +129,33 @@ public class SignIn extends javax.swing.JFrame {
         String username = jTextField1.getText();
         String password = String.valueOf(jPasswordField1.getPassword());
 
-        if (username.isEmpty()) {
-            jTextField1.putClientProperty("JComponent.outline", "error");
-        } else if (password.isEmpty()) {
-            jPasswordField1.putClientProperty("JComponent.outline", "error");
-        } else {
-            try {
+        Home home = new Home();
+        home.setVisible(true);
+        this.dispose();
 
-                ResultSet resultSet = MySQL.exucute("SELECT * FROM `user` WHERE `username` = '" + username + "' AND `password` = '" + password + "'");
-                if (resultSet.next()) {
-                    JOptionPane.showMessageDialog(this, "Success!");
-                    Home home = new Home();
-                    home.setVisible(true);
-                    this.dispose();
-                } else {
-                    JOptionPane.showMessageDialog(this, "Wrong credentioal", "Warning", JOptionPane.WARNING_MESSAGE);
-                }
-
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
+//        if (username.isEmpty()) {
+//            jTextField1.putClientProperty("JComponent.outline", "error");
+//        } else if (password.isEmpty()) {
+//            jPasswordField1.putClientProperty("JComponent.outline", "error");
+//        } else {
+//            try {
+//
+//                ResultSet resultSet = MySQL.exucute("SELECT * FROM `user` WHERE `username` = '" + username + "' AND `password` = '" + password + "'");
+//                if (resultSet.next()) {
+//                    JOptionPane.showMessageDialog(this, "Success!");
+//                    Home home = new Home();
+//                    home.setVisible(true);
+//                    this.dispose();
+//                } else {
+//                    JOptionPane.showMessageDialog(this, "Wrong credentioal", "Warning", JOptionPane.WARNING_MESSAGE);
+//                }
+//
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//            }
+//        }
 
     }//GEN-LAST:event_jButton1ActionPerformed
-
-    private void jPasswordField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jPasswordField1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jPasswordField1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -166,13 +164,12 @@ public class SignIn extends javax.swing.JFrame {
 
         Color myWhite = new Color(250, 250, 250);
         Color myBlack = new Color(9, 9, 11);
-        
 
         FlatDarkLaf.setup();
         UIManager.put("TextComponent.arc", 8);
         UIManager.put("TextField.foreground", myWhite);
         UIManager.put("TextField.background", myBlack);
-        
+
         UIManager.put("PasswordField.foreground", myWhite);
         UIManager.put("PasswordField.background", myBlack);
 
@@ -182,7 +179,6 @@ public class SignIn extends javax.swing.JFrame {
         UIManager.put("background", myBlack);
 
         UIManager.put("Button", "borderColor: #09090B; background: #09090B; foreground: #fff");
-//        UIManager.put("[style].secondary", "borderColor: #09090B: background: #09090B: foreground: #fff");
 
 
         /* Create and display the form */
@@ -192,10 +188,7 @@ public class SignIn extends javax.swing.JFrame {
             }
         });
     }
-    
-   
-        
-    
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
@@ -205,8 +198,8 @@ public class SignIn extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel7;
-    private javax.swing.JPanel jPanel1;
     private javax.swing.JPasswordField jPasswordField1;
     private javax.swing.JTextField jTextField1;
+    private components.PanelRound panelRound1;
     // End of variables declaration//GEN-END:variables
 }
