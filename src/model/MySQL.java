@@ -12,13 +12,13 @@ public class MySQL{
     static {
         try {
            Class.forName("com.mysql.cj.jdbc.Driver");
-           connection = DriverManager.getConnection("jdbc:mysql://localhost/nexgen", "root", "oni-chan99");
+           connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/nexgen", "root", "oni-chan99");
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
     
-    public static ResultSet exucute(String query) throws Exception {
+    public static ResultSet execute(String query) throws Exception {
         if (query.startsWith("SELECT")) {
             return connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY).executeQuery(query);
         }else{

@@ -11,6 +11,7 @@ import model.MySQL;
 import java.sql.ResultSet;
 import javax.swing.UIManager;
 
+
 /**
  *
  * @author thidas
@@ -22,8 +23,10 @@ public class SignIn extends javax.swing.JFrame {
      */
     public SignIn() {
         initComponents();
+      
     }
-
+    
+ 
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -167,6 +170,7 @@ public class SignIn extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_usernameFieldActionPerformed
 
+  
     /**
      * @param args the command line arguments
      */
@@ -178,7 +182,7 @@ public class SignIn extends javax.swing.JFrame {
         FlatDarkLaf.registerCustomDefaultsSource("resources.theme");
 
         FlatDarkLaf.setup();
-////        UIManager.put("TextComponent.arc", 8);
+//        UIManager.put("TextComponent.arc", 8);
 //        UIManager.put("TextField.foreground", myWhite);
 //        UIManager.put("TextField.background", myBlack);
 

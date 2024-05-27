@@ -1,16 +1,22 @@
 package gui;
 
-import com.formdev.flatlaf.FlatDarkLaf;
+import com.github.weisj.jsvg.nodes.Title;
+import gui.popUps.brandManage;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.Image;
-import javax.imageio.ImageIO;
-import javax.swing.Icon;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.SwingUtilities;
-import javax.swing.UIManager;
+import javax.swing.Timer;
+import raven.popup.DefaultOption;
+import raven.popup.GlassPanePopup;
+import raven.popup.component.SimplePopupBorder;
 
 /**
  *
@@ -33,6 +39,47 @@ public class Home extends javax.swing.JFrame {
      */
     public Home() {
         initComponents();
+        init();
+        addDashboard();
+        time();
+    }
+
+    private void time() {
+        final DateFormat timeFormat = new SimpleDateFormat("yyy MMMM dd    HH:mm aa");
+        ActionListener timerListener = (ActionEvent e) -> {
+            Date date = new Date();
+            String time = timeFormat.format(date);
+            timeLabel.setText(time);
+        };
+        Timer timer = new Timer(1000, timerListener);
+        // to make sure it doesn't wait one second at the start
+        timer.setInitialDelay(0);
+        timer.start();
+        
+        
+    }
+
+    private void init() {
+        GlassPanePopup.install(this);
+    }
+
+    public static void showPopUp() {
+        brandManage brandManage = new gui.popUps.brandManage();
+        DefaultOption option = new DefaultOption() {
+            @Override
+            public boolean closeWhenClickOutside() {
+                return true;
+            }
+        };
+        String actions[] = new String[]{"Cancel", "Save"};
+        GlassPanePopup.showPopup(new SimplePopupBorder(brandManage, "Brand Manage", actions, (pc, i) -> {
+            if (i == 1) {
+                //save
+                return;
+            } else {
+                pc.closePopup();
+            }
+        }), option);
     }
 
     private Color myWhite = new Color(250, 250, 250);
@@ -69,7 +116,7 @@ public class Home extends javax.swing.JFrame {
             case "Sales Management":
                 activeButton.setIcon(salesWhite);
                 break;
-            case "Inventory Mangement":
+            case "Inventory Management":
                 activeButton.setIcon(inventoryWhite);
                 break;
             case "Warranty":
@@ -265,12 +312,6 @@ public class Home extends javax.swing.JFrame {
         SwingUtilities.updateComponentTreeUI(bodyPanel);
     }
 
-    public void removeProductManage() {
-        bodyPanel.remove(productManage);
-        productManage = null;
-        SwingUtilities.updateComponentTreeUI(bodyPanel);
-    }
-
     public void removeActivePanel() {
         Component[] components = bodyPanel.getComponents();
         for (Component component : components) {
@@ -307,12 +348,12 @@ public class Home extends javax.swing.JFrame {
         repotingButton = new javax.swing.JButton();
         containerPanel = new javax.swing.JPanel();
         header = new javax.swing.JPanel();
-        dateLabel = new javax.swing.JLabel();
         timeLabel = new javax.swing.JLabel();
         bodyPanel = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(24, 24, 24));
+        setMinimumSize(new java.awt.Dimension(1606, 900));
 
         sideMenuPanel.setBackground(new java.awt.Color(9, 9, 11));
         sideMenuPanel.setFocusable(false);
@@ -321,8 +362,10 @@ public class Home extends javax.swing.JFrame {
 
         logo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/image/sideMenuLogo.png"))); // NOI18N
 
+        dashboardButton.setBackground(new java.awt.Color(9, 9, 11));
         dashboardButton.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        dashboardButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/icons/dashboard-dark.png"))); // NOI18N
+        dashboardButton.setForeground(new java.awt.Color(250, 250, 250));
+        dashboardButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/icons/dashboard-white.png"))); // NOI18N
         dashboardButton.setText("Dashboard");
         dashboardButton.setBorderPainted(false);
         dashboardButton.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
@@ -463,30 +506,23 @@ public class Home extends javax.swing.JFrame {
         header.setBackground(new java.awt.Color(24, 24, 24));
         header.setPreferredSize(new java.awt.Dimension(1356, 48));
 
-        dateLabel.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
-        dateLabel.setText("2024 March 25");
-
         timeLabel.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
-        timeLabel.setText("19:49 pm");
+        timeLabel.setText("2024 March 25   00:46 am");
 
         javax.swing.GroupLayout headerLayout = new javax.swing.GroupLayout(header);
         header.setLayout(headerLayout);
         headerLayout.setHorizontalGroup(
             headerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(headerLayout.createSequentialGroup()
-                .addGap(20, 20, 20)
-                .addComponent(dateLabel)
-                .addGap(20, 20, 20)
+                .addGap(18, 18, 18)
                 .addComponent(timeLabel)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(1149, Short.MAX_VALUE))
         );
         headerLayout.setVerticalGroup(
             headerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(headerLayout.createSequentialGroup()
                 .addGap(12, 12, 12)
-                .addGroup(headerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(dateLabel)
-                    .addComponent(timeLabel))
+                .addComponent(timeLabel)
                 .addContainerGap(14, Short.MAX_VALUE))
         );
 
@@ -541,20 +577,19 @@ public class Home extends javax.swing.JFrame {
      */
     public static void main(String args[]) {
 
-
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new Home().setVisible(true);
             }
         });
+
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel bodyPanel;
     private javax.swing.JPanel containerPanel;
     private javax.swing.JButton dashboardButton;
-    private javax.swing.JLabel dateLabel;
     private javax.swing.JPanel header;
     private javax.swing.JButton inventoryManageButton;
     private javax.swing.JLabel logo;

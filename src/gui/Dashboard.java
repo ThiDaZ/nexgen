@@ -58,7 +58,7 @@ public class Dashboard extends javax.swing.JPanel {
                 .addComponent(summaryTitle)
                 .addGap(18, 18, 18)
                 .addComponent(chartContainer, javax.swing.GroupLayout.PREFERRED_SIZE, 380, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(383, Short.MAX_VALUE))
+                .addContainerGap(380, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
