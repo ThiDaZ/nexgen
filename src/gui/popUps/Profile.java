@@ -30,7 +30,6 @@ public class Profile extends javax.swing.JPanel {
     private void getUserData() {
 
         try {
-
             ResultSet rs = MySQL.execute("SELECT * FROM `user` WHERE `id` = '" + userId + "' ");
 
             while (rs.next()) {
@@ -44,11 +43,8 @@ public class Profile extends javax.swing.JPanel {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
         usernameLabel.setText(username);
         roleLabel.setText(userRole);
-        System.out.println(username);
-
     }
 
     /**
@@ -266,7 +262,4 @@ public class Profile extends javax.swing.JPanel {
     private javax.swing.JLabel usernameLabel;
     // End of variables declaration//GEN-END:variables
 
-    /**
-     * @param user the user to set
-     */
 }

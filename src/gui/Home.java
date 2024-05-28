@@ -52,6 +52,7 @@ public class Home extends javax.swing.JFrame {
     private InventoryManage inventoryManage;
     private Warranty warranty;
     private Reporting reporting;
+    private CustomerManage customerManage;
 
     /**
      * Creates new form Home
@@ -305,10 +306,10 @@ public class Home extends javax.swing.JFrame {
             activeButton.setForeground(myBlack);
             activeButton.setIcon(warrantyDark);
         }
-        if (warranty == null) {
-            warranty = new Warranty();
+        if (customerManage == null) {
+            customerManage = new CustomerManage();
         }
-        bodyPanel.add(warranty, BorderLayout.CENTER);
+        bodyPanel.add(customerManage, BorderLayout.CENTER);
         SwingUtilities.updateComponentTreeUI(bodyPanel);
     }
 
@@ -463,7 +464,7 @@ public class Home extends javax.swing.JFrame {
         warrantyButton.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         warrantyButton.setForeground(new java.awt.Color(250, 250, 250));
         warrantyButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/icons/shield-white.png"))); // NOI18N
-        warrantyButton.setText("Warranty");
+        warrantyButton.setText("Custermer Manage");
         warrantyButton.setBorderPainted(false);
         warrantyButton.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         warrantyButton.setIconTextGap(16);

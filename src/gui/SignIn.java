@@ -134,8 +134,10 @@ public class SignIn extends javax.swing.JFrame {
         String username = usernameField.getText();
         String password = String.valueOf(passwordField.getPassword());
 //
-//        Home home = new Home();
-//        home.setVisible(true);
+        Home home = new Home();
+        home.setVisible(true);
+        this.dispose();
+
         if (username.isEmpty()) {
             usernameField.putClientProperty("JComponent.outline", "error");
         } else if (password.isEmpty()) {
@@ -158,7 +160,7 @@ public class SignIn extends javax.swing.JFrame {
 
                         System.out.println(user.getId());
                         System.out.println(user.getUsername());
-                        Home home = new Home();
+//                        Home home = new Home();
                         home.setUser(user);
 
                         home.setVisible(true);
