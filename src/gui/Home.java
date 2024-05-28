@@ -28,11 +28,19 @@ public class Home extends javax.swing.JFrame {
 
     private UserModel user;
 
-    /**
-     * @param user the user to set
-     */
+    private int userid;
+    private String username;
+    private String userRole;
+
     public void setUser(UserModel user) {
         this.user = user;
+        if (user != null) {
+            userid = user.getId();
+            username = user.getUsername();
+            userRole = user.getRole();
+        } else {
+            System.out.println("User is null in setUser");
+        }
     }
 
     private JButton activeButton;
@@ -53,15 +61,7 @@ public class Home extends javax.swing.JFrame {
         init();
         addDashboard();
         time();
-        
-        
 
-        if (user != null) {
-            System.out.println("user not null");
-        } else {
-            System.out.println("user null");
-
-        }
     }
 
     private void time() {
@@ -75,6 +75,13 @@ public class Home extends javax.swing.JFrame {
         // to make sure it doesn't wait one second at the start
         timer.setInitialDelay(0);
         timer.start();
+
+        if (user != null) {
+            System.out.println("user not null");
+        } else {
+            System.out.println("user null");
+
+        }
 
     }
 
@@ -609,7 +616,7 @@ public class Home extends javax.swing.JFrame {
 
 
     private void profileImageMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_profileImageMouseClicked
-        Profile profile = new gui.popUps.Profile();
+        Profile profile = new gui.popUps.Profile(userid, username, userRole);
         DefaultOption option = new DefaultOption() {
             @Override
             public boolean closeWhenClickOutside() {

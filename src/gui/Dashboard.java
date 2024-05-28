@@ -14,7 +14,7 @@ import model.ChartModel;
 
 /**
  *
- * @author thida
+ * @author thidas
  */
 public class Dashboard extends javax.swing.JPanel {
 
@@ -45,16 +45,14 @@ public class Dashboard extends javax.swing.JPanel {
                 list.add(new ChartModel(month, sales));
             }
 
-            // Print out the contents of the list
-            System.out.println("Contents of the list:");
-            for (ChartModel model : list) {
-                System.out.println(model.getMonth() + "-" + model.getSales());
-            }
+//            System.out.println("Contents of the list:");
+//            for (ChartModel model : list) {
+//                System.out.println(model.getMonth() + "-" + model.getSales());
+//            }
 
-            // Process list further...
             for (int i = list.size() - 1; i >= 0; i--) {
                 ChartModel model = list.get(i);
-                System.out.println(model);
+//                System.out.println(model);
                 chart.addData(new ModelChart(model.getMonth(), new double[]{model.getSales()}));
             }
             chart.start();

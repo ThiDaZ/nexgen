@@ -133,10 +133,9 @@ public class SignIn extends javax.swing.JFrame {
     private void loginButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginButtonActionPerformed
         String username = usernameField.getText();
         String password = String.valueOf(passwordField.getPassword());
-
-        Home home = new Home();
-        home.setVisible(true);
-        this.dispose();
+//
+//        Home home = new Home();
+//        home.setVisible(true);
         if (username.isEmpty()) {
             usernameField.putClientProperty("JComponent.outline", "error");
         } else if (password.isEmpty()) {
@@ -155,41 +154,33 @@ public class SignIn extends javax.swing.JFrame {
                         String mobile = resultSet.getString("mobile");
                         String role = resultSet.getString("type");
 
-                        UserModel user = new UserModel();
+                        UserModel user = new UserModel(id, userName, role);
 
-                        user.setId(id);
-                        user.setFname(fname);
-                        user.setLname(lname);
-                        user.setUsername(userName);
-                        user.setMobile(mobile);
-                        user.setRole(role);
+                        System.out.println(user.getId());
+                        System.out.println(user.getUsername());
+                        Home home = new Home();
+                        home.setUser(user);
 
+                        home.setVisible(true);
                         if (user != null) {
                             System.out.println("user not null");
                         } else {
                             System.out.println("user null");
-
                         }
-
-//                        System.out.println(user.getFname());
-//                        System.out.println(user.getUsername());
-                        JOptionPane.showMessageDialog(this, "Success!");
-//                        Home home = new Home();
-                        home.setVisible(true);
-                        home.setUser(user);
 
                         this.dispose();
                     } else {
-                        JOptionPane.showMessageDialog(this, "Your acount has suspended. Please contact admin!", "Warning", JOptionPane.WARNING_MESSAGE);
+                        JOptionPane.showMessageDialog(this, "Account is inactive. Please contact admin!", "Warning", JOptionPane.WARNING_MESSAGE);
 
                     }
 
                 } else {
-                    JOptionPane.showMessageDialog(this, "Wrong credentioal", "Warning", JOptionPane.WARNING_MESSAGE);
+                    JOptionPane.showMessageDialog(this, "Wrong credential", "Warning", JOptionPane.WARNING_MESSAGE);
                 }
 
             } catch (Exception e) {
                 e.printStackTrace();
+                JOptionPane.showMessageDialog(this, "An error occurred while trying to log in.");
             }
         }
 
