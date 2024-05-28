@@ -1,6 +1,7 @@
 package gui;
 
 import com.github.weisj.jsvg.nodes.Title;
+import gui.popUps.Profile;
 import gui.popUps.brandManage;
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -14,6 +15,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
+import model.UserModel;
 import raven.popup.DefaultOption;
 import raven.popup.GlassPanePopup;
 import raven.popup.component.SimplePopupBorder;
@@ -23,6 +25,15 @@ import raven.popup.component.SimplePopupBorder;
  * @author thidas
  */
 public class Home extends javax.swing.JFrame {
+
+    private UserModel user;
+
+    /**
+     * @param user the user to set
+     */
+    public void setUser(UserModel user) {
+        this.user = user;
+    }
 
     private JButton activeButton;
 
@@ -42,6 +53,15 @@ public class Home extends javax.swing.JFrame {
         init();
         addDashboard();
         time();
+        
+        
+
+        if (user != null) {
+            System.out.println("user not null");
+        } else {
+            System.out.println("user null");
+
+        }
     }
 
     private void time() {
@@ -55,8 +75,7 @@ public class Home extends javax.swing.JFrame {
         // to make sure it doesn't wait one second at the start
         timer.setInitialDelay(0);
         timer.start();
-        
-        
+
     }
 
     private void init() {
@@ -349,6 +368,7 @@ public class Home extends javax.swing.JFrame {
         containerPanel = new javax.swing.JPanel();
         header = new javax.swing.JPanel();
         timeLabel = new javax.swing.JLabel();
+        profileImage = new main.ImageAvatar();
         bodyPanel = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -509,6 +529,14 @@ public class Home extends javax.swing.JFrame {
         timeLabel.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
         timeLabel.setText("2024 March 25   00:46 am");
 
+        profileImage.setBorderSize(0);
+        profileImage.setImage(new javax.swing.ImageIcon(getClass().getResource("/resources/profileImage/pic.jpg"))); // NOI18N
+        profileImage.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                profileImageMouseClicked(evt);
+            }
+        });
+
         javax.swing.GroupLayout headerLayout = new javax.swing.GroupLayout(header);
         header.setLayout(headerLayout);
         headerLayout.setHorizontalGroup(
@@ -516,14 +544,21 @@ public class Home extends javax.swing.JFrame {
             .addGroup(headerLayout.createSequentialGroup()
                 .addGap(18, 18, 18)
                 .addComponent(timeLabel)
-                .addContainerGap(1149, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 1107, Short.MAX_VALUE)
+                .addComponent(profileImage, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(16, 16, 16))
         );
         headerLayout.setVerticalGroup(
             headerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(headerLayout.createSequentialGroup()
-                .addGap(12, 12, 12)
-                .addComponent(timeLabel)
-                .addContainerGap(14, Short.MAX_VALUE))
+                .addGroup(headerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(headerLayout.createSequentialGroup()
+                        .addGap(12, 12, 12)
+                        .addComponent(timeLabel))
+                    .addGroup(headerLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(profileImage, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(10, Short.MAX_VALUE))
         );
 
         containerPanel.add(header, java.awt.BorderLayout.PAGE_START);
@@ -572,6 +607,27 @@ public class Home extends javax.swing.JFrame {
         addWarranty();
     }//GEN-LAST:event_warrantyButtonActionPerformed
 
+
+    private void profileImageMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_profileImageMouseClicked
+        Profile profile = new gui.popUps.Profile();
+        DefaultOption option = new DefaultOption() {
+            @Override
+            public boolean closeWhenClickOutside() {
+                return true;
+            }
+        };
+        String actions[] = new String[]{};
+        GlassPanePopup.showPopup(new SimplePopupBorder(profile, "Profile", actions, (pc, i) -> {
+            if (i == 1) {
+                //save
+                return;
+            } else {
+                pc.closePopup();
+            }
+        }), option);
+
+    }//GEN-LAST:event_profileImageMouseClicked
+
     /**
      * @param args the command line arguments
      */
@@ -594,6 +650,7 @@ public class Home extends javax.swing.JFrame {
     private javax.swing.JButton inventoryManageButton;
     private javax.swing.JLabel logo;
     private javax.swing.JButton productManageButton;
+    private main.ImageAvatar profileImage;
     private javax.swing.JButton repotingButton;
     private javax.swing.JButton salesManageButton;
     private javax.swing.JPanel sideMenuPanel;

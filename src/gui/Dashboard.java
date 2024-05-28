@@ -4,6 +4,14 @@
  */
 package gui;
 
+import java.awt.Color;
+import java.util.ArrayList;
+import java.util.List;
+import model.MySQL;
+import java.sql.ResultSet;
+import raven.chart.ModelChart;
+import model.ChartModel;
+
 /**
  *
  * @author thida
@@ -15,6 +23,44 @@ public class Dashboard extends javax.swing.JPanel {
      */
     public Dashboard() {
         initComponents();
+
+        chart.setTitle("");
+        chart.addLegend("summary", Color.decode("#26a0da"), Color.decode("#314755"));
+//        chart.addLegend("Monthly", Color.decode("#e65c00"), Color.decode("#f9d433"));
+//        chart.addLegend("yearly", Color.decode("#cc2b5e"), Color.decode("#753a88"));
+
+        setData();
+
+    }
+
+    private void setData() {
+        try {
+            List<ChartModel> list = new ArrayList<>();
+
+            ResultSet rs = MySQL.execute("SELECT DATE_FORMAT(MAX(date), '%M') AS 'Month', SUM(paid_amount) AS Sales FROM `invoice` GROUP BY DATE_FORMAT(date, '%m%Y') ORDER BY DATE_FORMAT(MAX(date), '%m%Y');");
+
+            while (rs.next()) {
+                String month = rs.getString("Month");
+                double sales = rs.getDouble("Sales");
+                list.add(new ChartModel(month, sales));
+            }
+
+            // Print out the contents of the list
+            System.out.println("Contents of the list:");
+            for (ChartModel model : list) {
+                System.out.println(model.getMonth() + "-" + model.getSales());
+            }
+
+            // Process list further...
+            for (int i = list.size() - 1; i >= 0; i--) {
+                ChartModel model = list.get(i);
+                System.out.println(model);
+                chart.addData(new ModelChart(model.getMonth(), new double[]{model.getSales()}));
+            }
+            chart.start();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -68,4 +114,5 @@ public class Dashboard extends javax.swing.JPanel {
     private javax.swing.JPanel chartContainer;
     private javax.swing.JLabel summaryTitle;
     // End of variables declaration//GEN-END:variables
+
 }

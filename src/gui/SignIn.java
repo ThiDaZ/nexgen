@@ -1,16 +1,13 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
 package gui;
 
 import com.formdev.flatlaf.FlatDarkLaf;
+import gui.popUps.Profile;
 import java.awt.Color;
 import javax.swing.JOptionPane;
 import model.MySQL;
 import java.sql.ResultSet;
 import javax.swing.UIManager;
-
+import model.UserModel;
 
 /**
  *
@@ -23,10 +20,9 @@ public class SignIn extends javax.swing.JFrame {
      */
     public SignIn() {
         initComponents();
-      
+
     }
-    
- 
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -141,28 +137,61 @@ public class SignIn extends javax.swing.JFrame {
         Home home = new Home();
         home.setVisible(true);
         this.dispose();
+        if (username.isEmpty()) {
+            usernameField.putClientProperty("JComponent.outline", "error");
+        } else if (password.isEmpty()) {
+            passwordField.putClientProperty("JComponent.outline", "error");
+        } else {
+            try {
 
-//        if (username.isEmpty()) {
-//            jTextField1.putClientProperty("JComponent.outline", "error");
-//        } else if (password.isEmpty()) {
-//            jPasswordField1.putClientProperty("JComponent.outline", "error");
-//        } else {
-//            try {
-//
-//                ResultSet resultSet = MySQL.exucute("SELECT * FROM `user` WHERE `username` = '" + username + "' AND `password` = '" + password + "'");
-//                if (resultSet.next()) {
-//                    JOptionPane.showMessageDialog(this, "Success!");
-//                    Home home = new Home();
-//                    home.setVisible(true);
-//                    this.dispose();
-//                } else {
-//                    JOptionPane.showMessageDialog(this, "Wrong credentioal", "Warning", JOptionPane.WARNING_MESSAGE);
-//                }
-//
-//            } catch (Exception e) {
-//                e.printStackTrace();
-//            }
-//        }
+                ResultSet resultSet = MySQL.execute("SELECT * FROM `user` INNER JOIN `type` ON `type`.`id` = `user`.`user_type_id` WHERE `username` = '" + username + "' AND `password` = '" + password + "'");
+                if (resultSet.next()) {
+
+                    if (resultSet.getInt("status_id") == 1) {
+                        int id = resultSet.getInt("id");
+                        String fname = resultSet.getString("fname");
+                        String lname = resultSet.getString("lname");
+                        String userName = resultSet.getString("username");
+                        String mobile = resultSet.getString("mobile");
+                        String role = resultSet.getString("type");
+
+                        UserModel user = new UserModel();
+
+                        user.setId(id);
+                        user.setFname(fname);
+                        user.setLname(lname);
+                        user.setUsername(userName);
+                        user.setMobile(mobile);
+                        user.setRole(role);
+
+                        if (user != null) {
+                            System.out.println("user not null");
+                        } else {
+                            System.out.println("user null");
+
+                        }
+
+//                        System.out.println(user.getFname());
+//                        System.out.println(user.getUsername());
+                        JOptionPane.showMessageDialog(this, "Success!");
+//                        Home home = new Home();
+                        home.setVisible(true);
+                        home.setUser(user);
+
+                        this.dispose();
+                    } else {
+                        JOptionPane.showMessageDialog(this, "Your acount has suspended. Please contact admin!", "Warning", JOptionPane.WARNING_MESSAGE);
+
+                    }
+
+                } else {
+                    JOptionPane.showMessageDialog(this, "Wrong credentioal", "Warning", JOptionPane.WARNING_MESSAGE);
+                }
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
 
     }//GEN-LAST:event_loginButtonActionPerformed
 
@@ -170,7 +199,6 @@ public class SignIn extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_usernameFieldActionPerformed
 
-  
     /**
      * @param args the command line arguments
      */
