@@ -1,5 +1,6 @@
 package gui;
 
+import static gui.SignIn.logger;
 import gui.popUps.customerAdd;
 import gui.popUps.productSelect;
 import java.sql.Connection;
@@ -9,6 +10,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Vector;
+import java.util.logging.Level;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
@@ -115,7 +117,7 @@ public class SaleManage extends javax.swing.JPanel {
             JasperViewer.viewReport(jasperPrint, false);
 
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.log(Level.WARNING, "An error occurred while trying to log in", e);
         }
 
     }
@@ -164,7 +166,8 @@ public class SaleManage extends javax.swing.JPanel {
             paymentComboBox.setSelectedIndex(0);
 
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.log(Level.WARNING, "An error occurred while trying to log in", e);
+            
         }
 
     }
@@ -237,7 +240,7 @@ public class SaleManage extends javax.swing.JPanel {
             calculate();
 
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.log(Level.WARNING, "An error occurred while trying to log in", e);
         }
 
     }
@@ -302,7 +305,7 @@ public class SaleManage extends javax.swing.JPanel {
         setPreferredSize(new java.awt.Dimension(1350, 852));
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 32)); // NOI18N
-        jLabel1.setText("Sale Manage");
+        jLabel1.setText("Sales Manage");
 
         salesTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -503,7 +506,7 @@ public class SaleManage extends javax.swing.JPanel {
                 .addGap(28, 28, 28)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel1)
+                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 205, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(dailyInvoiceLabel))
                     .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))

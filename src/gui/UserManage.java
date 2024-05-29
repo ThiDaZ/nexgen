@@ -1,9 +1,6 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
- */
 package gui;
 
+import static gui.SignIn.logger;
 import java.sql.ResultSet;
 import java.util.HashMap;
 import java.util.Vector;
@@ -11,14 +8,9 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
-import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableModel;
 import model.MySQL;
 
-/**
- *
- * @author subash kavinda
- */
 public class UserManage extends javax.swing.JPanel {
 
     /**
@@ -36,13 +28,13 @@ public class UserManage extends javax.swing.JPanel {
     private void reset() {
         addUserButton.setEnabled(true);
 
-        jTextField1.setText("");
-        jTextField2.setText("");
-        jTextField3.setText("");
-        jTextField4.setText("");
-        jPasswordField1.setText("");
-        jComboBox1.setSelectedIndex(0);
-        jComboBox2.setSelectedIndex(0);
+        fnameField.setText("");
+        lnameField.setText("");
+        mobileField.setText("");
+        usernameField.setText("");
+        passwordField.setText("");
+        typeComboBox.setSelectedIndex(0);
+        statusComboBox.setSelectedIndex(0);
         userSearchField.setText("");
 
     }
@@ -59,13 +51,13 @@ public class UserManage extends javax.swing.JPanel {
                 typemap.put(resultset.getString("type"), resultset.getString("id"));
             }
 
-            DefaultComboBoxModel model = (DefaultComboBoxModel) jComboBox1.getModel();
+            DefaultComboBoxModel model = (DefaultComboBoxModel) typeComboBox.getModel();
             model.removeAllElements();
 
             model.addAll(v);
-            jComboBox1.setSelectedIndex(0);
-
+            typeComboBox.setSelectedIndex(0);
         } catch (Exception e) {
+            logger.log(Level.WARNING, "Somthing went worng!", e);
         }
 
     }
@@ -82,13 +74,14 @@ public class UserManage extends javax.swing.JPanel {
                 statusmap.put(resultset.getString("status"), resultset.getString("id"));
             }
 
-            DefaultComboBoxModel model = (DefaultComboBoxModel) jComboBox2.getModel();
+            DefaultComboBoxModel model = (DefaultComboBoxModel) statusComboBox.getModel();
             model.removeAllElements();
 
             model.addAll(v);
-            jComboBox2.setSelectedIndex(0);
+            statusComboBox.setSelectedIndex(0);
 
         } catch (Exception e) {
+            logger.log(Level.WARNING, "Somthing went worng!", e);
         }
 
     }
@@ -118,7 +111,7 @@ public class UserManage extends javax.swing.JPanel {
 
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.log(Level.WARNING, "Somthing went worng!", e);
         }
 
     }
@@ -134,18 +127,18 @@ public class UserManage extends javax.swing.JPanel {
 
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
+        fnameField = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
-        jTextField2 = new javax.swing.JTextField();
+        lnameField = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
-        jTextField3 = new javax.swing.JTextField();
+        mobileField = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
-        jTextField4 = new javax.swing.JTextField();
+        usernameField = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
-        jComboBox1 = new javax.swing.JComboBox<>();
+        typeComboBox = new javax.swing.JComboBox<>();
         jLabel6 = new javax.swing.JLabel();
-        jPasswordField1 = new javax.swing.JPasswordField();
-        jComboBox2 = new javax.swing.JComboBox<>();
+        passwordField = new javax.swing.JPasswordField();
+        statusComboBox = new javax.swing.JComboBox<>();
         jLabel8 = new javax.swing.JLabel();
         addUserButton = new javax.swing.JButton();
         updateUserButton = new javax.swing.JButton();
@@ -170,16 +163,11 @@ public class UserManage extends javax.swing.JPanel {
 
         jLabel5.setText("Type");
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        typeComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         jLabel6.setText("Password");
 
-        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        jComboBox2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jComboBox2ActionPerformed(evt);
-            }
-        });
+        statusComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         jLabel8.setText("Status");
 
@@ -210,31 +198,31 @@ public class UserManage extends javax.swing.JPanel {
                         .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                             .addComponent(jLabel6)
                             .addGap(25, 25, 25)
-                            .addComponent(jPasswordField1, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(passwordField, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGroup(jPanel1Layout.createSequentialGroup()
                             .addComponent(jLabel1)
                             .addGap(18, 18, 18)
-                            .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(fnameField, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGroup(jPanel1Layout.createSequentialGroup()
                             .addComponent(jLabel2)
                             .addGap(18, 18, 18)
-                            .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(lnameField, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGroup(jPanel1Layout.createSequentialGroup()
                             .addComponent(jLabel3)
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(mobileField, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGroup(jPanel1Layout.createSequentialGroup()
                             .addComponent(jLabel4)
                             .addGap(22, 22, 22)
-                            .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(usernameField, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGroup(jPanel1Layout.createSequentialGroup()
                             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                 .addComponent(jLabel5)
                                 .addComponent(jLabel8))
                             .addGap(43, 43, 43)
                             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                                .addComponent(typeComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(statusComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                 .addContainerGap(117, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -243,31 +231,31 @@ public class UserManage extends javax.swing.JPanel {
                 .addGap(28, 28, 28)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(fnameField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(14, 14, 14)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
-                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(lnameField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(14, 14, 14)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
-                    .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(mobileField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(14, 14, 14)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
-                    .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(usernameField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(14, 14, 14)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
-                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(typeComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(9, 9, 9)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jLabel8)
-                    .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(statusComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(14, 14, 14)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel6)
-                    .addComponent(jPasswordField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(passwordField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 48, Short.MAX_VALUE)
                 .addComponent(addUserButton)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -394,27 +382,26 @@ public class UserManage extends javax.swing.JPanel {
 
             if (selectedrow != -1) {
                 String firstname = jTable1.getValueAt(selectedrow, 1).toString();
-                jTextField1.setText(firstname);
+                fnameField.setText(firstname);
 
                 String lastname = jTable1.getValueAt(selectedrow, 2).toString();
-                jTextField2.setText(lastname);
+                lnameField.setText(lastname);
 
                 String mobile = jTable1.getValueAt(selectedrow, 3).toString();
-                jTextField3.setText(mobile);
+                mobileField.setText(mobile);
 
                 String username = jTable1.getValueAt(selectedrow, 4).toString();
-                jTextField4.setText(username);
+                usernameField.setText(username);
 
                 String type = jTable1.getValueAt(selectedrow, 6).toString();
-                jComboBox1.setSelectedItem(type);
+                typeComboBox.setSelectedItem(type);
 
                 String status = jTable1.getValueAt(selectedrow, 5).toString();
-                jComboBox2.setSelectedItem(status);
+                statusComboBox.setSelectedItem(status);
             }
 
         }
 
-        // TODO add your handling code here:
     }//GEN-LAST:event_jTable1MouseClicked
 
     private void updateUserButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateUserButtonActionPerformed
@@ -423,13 +410,13 @@ public class UserManage extends javax.swing.JPanel {
 
         if (selectedrow != -1) {
             String id = jTable1.getValueAt(selectedrow, 0).toString();
-            String fname = jTextField1.getText();
-            String lname = jTextField2.getText();
-            String mobile = jTextField3.getText();
-            String username = jTextField4.getText();
-            String password = String.valueOf(jPasswordField1.getPassword());
-            String type = jComboBox1.getSelectedItem().toString();
-            String status = jComboBox2.getSelectedItem().toString();
+            String fname = fnameField.getText();
+            String lname = lnameField.getText();
+            String mobile = mobileField.getText();
+            String username = usernameField.getText();
+            String password = String.valueOf(passwordField.getPassword());
+            String type = typeComboBox.getSelectedItem().toString();
+            String status = statusComboBox.getSelectedItem().toString();
 
             try {
                 MySQL.execute("UPDATE `user` SET `fname`='" + fname + "', `lname`='" + lname + "' ,`mobile`='" + mobile + "' ,`username`='" + username + "' ,`password`='" + password + "' , `user_type_id`='" + typemap.get(type) + "' ,`status_id`='" + statusmap.get(status) + "' WHERE `id` ='" + id + "'");
@@ -444,25 +431,20 @@ public class UserManage extends javax.swing.JPanel {
             }
 
         } else {
-
             JOptionPane.showMessageDialog(this, "please select user", "message", JOptionPane.PLAIN_MESSAGE);
         }
 
-        // TODO add your handling code here:
     }//GEN-LAST:event_updateUserButtonActionPerformed
 
     private void addUserButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addUserButtonActionPerformed
 
         try {
-
-            String fname = jTextField1.getText();
-            String lname = jTextField2.getText();
-            String mobile = jTextField3.getText();
-            String username = jTextField4.getText();
-
-            String type = String.valueOf(jComboBox1.getSelectedItem());
-
-            String password = String.valueOf(jPasswordField1.getPassword());
+            String fname = fnameField.getText();
+            String lname = lnameField.getText();
+            String mobile = mobileField.getText();
+            String username = usernameField.getText();
+            String type = String.valueOf(typeComboBox.getSelectedItem());
+            String password = String.valueOf(passwordField.getPassword());
 
             if (fname.isEmpty()) {
                 JOptionPane.showMessageDialog(this, "please enter your first name", "Warning", JOptionPane.WARNING_MESSAGE);
@@ -492,24 +474,16 @@ public class UserManage extends javax.swing.JPanel {
                             + "`type` ON `user`.`user_type_id`=`type`.`id` INNER JOIN `status` ON "
                             + "`user`.`status_id` = `status`.`id`");
                     JOptionPane.showMessageDialog(this, "New user add!", "message", JOptionPane.WARNING_MESSAGE);
-
                 }
             }
-
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.log(Level.WARNING, "An error occurred while trying to log in", e);
         }
 
-        // TODO add your handling code here:
     }//GEN-LAST:event_addUserButtonActionPerformed
 
     private void resetButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_resetButtonActionPerformed
-        reset();        // TODO add your handling code here:
     }//GEN-LAST:event_resetButtonActionPerformed
-
-    private void jComboBox2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox2ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jComboBox2ActionPerformed
 
     private void userSearchFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_userSearchFieldKeyReleased
         String query = "SELECT * FROM `user` "
@@ -524,10 +498,7 @@ public class UserManage extends javax.swing.JPanel {
             }
         }
 
-        System.out.println(query);
-
         try {
-
             ResultSet rs = MySQL.execute(query);
             DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
             model.setRowCount(0);
@@ -543,11 +514,9 @@ public class UserManage extends javax.swing.JPanel {
                 v.add(rs.getString("type.type"));
 
                 model.addRow(v);
-
             }
-
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.log(Level.WARNING, "An error occurred while trying to log in", e);
         }
 
     }//GEN-LAST:event_userSearchFieldKeyReleased
@@ -555,8 +524,7 @@ public class UserManage extends javax.swing.JPanel {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton addUserButton;
-    private javax.swing.JComboBox<String> jComboBox1;
-    private javax.swing.JComboBox<String> jComboBox2;
+    private javax.swing.JTextField fnameField;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -568,15 +536,16 @@ public class UserManage extends javax.swing.JPanel {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
-    private javax.swing.JPasswordField jPasswordField1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
-    private javax.swing.JTextField jTextField4;
+    private javax.swing.JTextField lnameField;
+    private javax.swing.JTextField mobileField;
+    private javax.swing.JPasswordField passwordField;
     private javax.swing.JButton resetButton;
+    private javax.swing.JComboBox<String> statusComboBox;
+    private javax.swing.JComboBox<String> typeComboBox;
     private javax.swing.JButton updateUserButton;
     private javax.swing.JTextField userSearchField;
+    private javax.swing.JTextField usernameField;
     // End of variables declaration//GEN-END:variables
 }

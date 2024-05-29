@@ -5,6 +5,7 @@
 package gui;
 
 import gui.InventoryManage;
+import static gui.SignIn.logger;
 import java.awt.BorderLayout;
 import java.sql.ResultSet;
 import java.util.Vector;
@@ -522,7 +523,7 @@ public class stock extends javax.swing.JFrame {
             }
 
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.log(Level.WARNING, "Somthing went wrong", e);
         }
     }//GEN-LAST:event_jButton4ActionPerformed
 

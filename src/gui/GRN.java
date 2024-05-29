@@ -6,6 +6,7 @@
 package gui;
 
 import Model.GRNitem;
+import static gui.SignIn.logger;
 import java.awt.Color;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -17,6 +18,7 @@ import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 import java.sql.ResultSet;
 import java.util.Map;
+import java.util.logging.Level;
 import model.MySQL;
 
 /**
@@ -646,7 +648,7 @@ public class GRN extends javax.swing.JPanel {
             System.out.println("System reset success");
 
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.log(Level.WARNING, "An error occurred while trying to log in", e);
         }
     }//GEN-LAST:event_jButton5ActionPerformed
 

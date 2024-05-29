@@ -4,8 +4,10 @@
  */
 package gui;
 
+import static gui.SignIn.logger;
 import java.sql.ResultSet;
 import java.util.Vector;
+import java.util.logging.Level;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import model.MySQL;
@@ -33,7 +35,7 @@ public class Supplier extends javax.swing.JFrame {
     public void setCompanyName(String company) {
         jTextField1.setText(company);
     }
-    
+
     private GRN grn;
 
     /**
@@ -41,23 +43,23 @@ public class Supplier extends javax.swing.JFrame {
      */
     public Supplier() {
         initComponents();
-         loadSupplier();
+        loadSupplier();
     }
     private String ComapanyId;
 
     private void loadSupplier() {
         try {
 
-            String query="SELECT * FROM `supplier` INNER JOIN `company` ON `supplier`.`company_id` =`company`.`id` ";
+            String query = "SELECT * FROM `supplier` INNER JOIN `company` ON `supplier`.`company_id` =`company`.`id` ";
 
-            if(jComboBox1.getSelectedIndex()==0){
-            query+="ORDER BY `fname` ASC";
-            }else if(jComboBox1.getSelectedIndex()==1){
-            query+="ORDER BY `fname` DESC";
-            }else if(jComboBox1.getSelectedIndex()==2){
-            query+="ORDER BY `name` ASC";
-            }else if(jComboBox1.getSelectedIndex()==3){
-            query+="ORDER BY `name` DESC";
+            if (jComboBox1.getSelectedIndex() == 0) {
+                query += "ORDER BY `fname` ASC";
+            } else if (jComboBox1.getSelectedIndex() == 1) {
+                query += "ORDER BY `fname` DESC";
+            } else if (jComboBox1.getSelectedIndex() == 2) {
+                query += "ORDER BY `name` ASC";
+            } else if (jComboBox1.getSelectedIndex() == 3) {
+                query += "ORDER BY `name` DESC";
             }
             System.out.println(query);
 
@@ -76,7 +78,8 @@ public class Supplier extends javax.swing.JFrame {
             }
 
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.log(Level.WARNING, "Somthing went wrong", e);
+
         }
 
     }
@@ -332,22 +335,22 @@ public class Supplier extends javax.swing.JFrame {
     private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
         // TODO add your handling code here:
         int row = jTable1.getSelectedRow();
-      if(evt.getClickCount() == 1){
-        jTextField2.setText(String.valueOf(jTable1.getValueAt(row, 0)));
-        jTextField3.setText(String.valueOf(jTable1.getValueAt(row, 1)));
-        jTextField4.setText(String.valueOf(jTable1.getValueAt(row, 2)));
-        jTextField5.setText(String.valueOf(jTable1.getValueAt(row, 3)));
-        jTextField1.setText(String.valueOf(jTable1.getValueAt(row, 4)));
-        jTextField2.setEditable(false);
-      }else if(evt.getClickCount()==2){
-      
-          String name=String.valueOf(jTable1.getValueAt(row, 1))+" "+String.valueOf(jTable1.getValueAt(row, 2));
-          String mobile=String.valueOf(jTable1.getValueAt(row, 0));
-          grn.getjLabel11().setText(name);
-          grn.getjLabel13().setText(mobile);
-          this.dispose();
-          
-      }
+        if (evt.getClickCount() == 1) {
+            jTextField2.setText(String.valueOf(jTable1.getValueAt(row, 0)));
+            jTextField3.setText(String.valueOf(jTable1.getValueAt(row, 1)));
+            jTextField4.setText(String.valueOf(jTable1.getValueAt(row, 2)));
+            jTextField5.setText(String.valueOf(jTable1.getValueAt(row, 3)));
+            jTextField1.setText(String.valueOf(jTable1.getValueAt(row, 4)));
+            jTextField2.setEditable(false);
+        } else if (evt.getClickCount() == 2) {
+
+            String name = String.valueOf(jTable1.getValueAt(row, 1)) + " " + String.valueOf(jTable1.getValueAt(row, 2));
+            String mobile = String.valueOf(jTable1.getValueAt(row, 0));
+            grn.getjLabel11().setText(name);
+            grn.getjLabel13().setText(mobile);
+            this.dispose();
+
+        }
 
     }//GEN-LAST:event_jTable1MouseClicked
 
@@ -385,7 +388,8 @@ public class Supplier extends javax.swing.JFrame {
             }
 
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.log(Level.WARNING, "Somthing went wrong", e);
+
         }
     }//GEN-LAST:event_jButton2ActionPerformed
 
@@ -419,6 +423,7 @@ public class Supplier extends javax.swing.JFrame {
 
         } catch (Exception e) {
             e.printStackTrace();
+            logger.log(Level.WARNING, "Somthing went wrong", e);
         }
     }//GEN-LAST:event_jButton3ActionPerformed
 
@@ -429,8 +434,8 @@ public class Supplier extends javax.swing.JFrame {
 
     private void jComboBox1ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jComboBox1ItemStateChanged
         // TODO add your handling code here:
-      
-  loadSupplier();
+
+        loadSupplier();
     }//GEN-LAST:event_jComboBox1ItemStateChanged
 
     /**

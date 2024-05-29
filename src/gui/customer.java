@@ -4,9 +4,11 @@
  */
 package gui;
 
+import static gui.SignIn.logger;
 import java.sql.ResultSet;
 import java.util.HashMap;
 import java.util.Vector;
+import java.util.logging.Level;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
@@ -63,7 +65,7 @@ public class customer extends javax.swing.JFrame {
             jComboBox2.setModel(model);
 
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.log(Level.WARNING, "An error occurred while trying to log in", e);
         }
 
     }
@@ -95,7 +97,7 @@ public class customer extends javax.swing.JFrame {
                 jTable1.setModel(model);
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.log(Level.WARNING, "An error occurred while trying to log in", e);
         }
 
     }
@@ -399,7 +401,7 @@ public class customer extends javax.swing.JFrame {
                 }
 
             } catch (Exception e) {
-                e.printStackTrace();
+                logger.log(Level.WARNING, "An error occurred while trying to log in", e);
             }
         }
 

@@ -17,14 +17,12 @@ public class Profile extends javax.swing.JPanel {
      * @param user
      */
     public Profile(int id, String username, String userRole) {
-
         this.userId = id;
         this.username = username;
         this.userRole = userRole;
 
         initComponents();
         getUserData();
-
     }
 
     private void getUserData() {

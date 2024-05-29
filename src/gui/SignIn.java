@@ -1,19 +1,18 @@
 package gui;
 
 import com.formdev.flatlaf.FlatDarkLaf;
-import gui.popUps.Profile;
 import java.awt.Color;
+import java.util.logging.Logger;
+import java.util.logging.Level;
 import javax.swing.JOptionPane;
 import model.MySQL;
 import java.sql.ResultSet;
 import javax.swing.UIManager;
 import model.UserModel;
 
-/**
- *
- * @author thidas
- */
 public class SignIn extends javax.swing.JFrame {
+
+    public static Logger logger = Logger.getLogger("nexgen");
 
     /**
      * Creates new form SignIn
@@ -61,12 +60,6 @@ public class SignIn extends javax.swing.JFrame {
 
         jLabel3.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
         jLabel3.setText("Sign in to continue NexGen");
-
-        usernameField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                usernameFieldActionPerformed(evt);
-            }
-        });
 
         usernameLabel.setText("Username");
 
@@ -133,10 +126,6 @@ public class SignIn extends javax.swing.JFrame {
     private void loginButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginButtonActionPerformed
         String username = usernameField.getText();
         String password = String.valueOf(passwordField.getPassword());
-//
-//        Home home = new Home();
-//        home.setVisible(true);
-//        this.dispose();
 
         if (username.isEmpty()) {
             usernameField.putClientProperty("JComponent.outline", "error");
@@ -144,53 +133,36 @@ public class SignIn extends javax.swing.JFrame {
             passwordField.putClientProperty("JComponent.outline", "error");
         } else {
             try {
-
-                ResultSet resultSet = MySQL.execute("SELECT * FROM `user` INNER JOIN `type` ON `type`.`id` = `user`.`user_type_id` WHERE `username` = '" + username + "' AND `password` = '" + password + "'");
+                ResultSet resultSet = MySQL.execute("SELECT * FROM `user` INNER JOIN `type` ON `type`.`id` = `user`.`user_type_id` "
+                        + "WHERE `username` = '" + username + "' AND `password` = '" + password + "'");
                 if (resultSet.next()) {
 
                     if (resultSet.getInt("status_id") == 1) {
                         int id = resultSet.getInt("id");
-                        String fname = resultSet.getString("fname");
-                        String lname = resultSet.getString("lname");
+
                         String userName = resultSet.getString("username");
-                        String mobile = resultSet.getString("mobile");
                         String role = resultSet.getString("type");
 
                         UserModel user = new UserModel(id, userName, role);
 
-                        System.out.println(user.getId());
-                        System.out.println(user.getUsername());
                         Home home = new Home();
                         home.setUser(user);
 
                         home.setVisible(true);
-                        if (user != null) {
-                            System.out.println("user not null");
-                        } else {
-                            System.out.println("user null");
-                        }
-
+                       
                         this.dispose();
                     } else {
                         JOptionPane.showMessageDialog(this, "Account is inactive. Please contact admin!", "Warning", JOptionPane.WARNING_MESSAGE);
-
                     }
-
                 } else {
                     JOptionPane.showMessageDialog(this, "Wrong credential", "Warning", JOptionPane.WARNING_MESSAGE);
                 }
-
             } catch (Exception e) {
-                e.printStackTrace();
-                JOptionPane.showMessageDialog(this, "An error occurred while trying to log in.");
+                logger.log(Level.WARNING, "An error occurred while trying to log in", e);
             }
         }
 
     }//GEN-LAST:event_loginButtonActionPerformed
-
-    private void usernameFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_usernameFieldActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_usernameFieldActionPerformed
 
     /**
      * @param args the command line arguments
@@ -201,11 +173,7 @@ public class SignIn extends javax.swing.JFrame {
         Color myBlack = new Color(9, 9, 11);
 
         FlatDarkLaf.registerCustomDefaultsSource("resources.theme");
-
-        FlatDarkLaf.setup();
-//        UIManager.put("TextComponent.arc", 8);
-//        UIManager.put("TextField.foreground", myWhite);
-//        UIManager.put("TextField.background", myBlack);
+            FlatDarkLaf.setup();
 
         UIManager.put("PasswordField.foreground", myWhite);
         UIManager.put("PasswordField.background", myBlack);
@@ -216,7 +184,6 @@ public class SignIn extends javax.swing.JFrame {
         UIManager.put("background", myBlack);
 
         UIManager.put("Button", "borderColor: #09090B; background: #09090B; foreground: #fff");
-
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {

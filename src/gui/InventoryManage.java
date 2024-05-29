@@ -488,42 +488,44 @@ public class InventoryManage extends javax.swing.JPanel {
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
 
-        jFormattedTextField1.setText("");
-        jFormattedTextField2.setText("");
-        String productid = productidField.getText();
+//        jFormattedTextField1.setText("");
+//        jFormattedTextField2.setText("");
+//        String productid = productidField.getText();
+//
+//        try {
+//            if (productid.isEmpty()) {
+//                JOptionPane.showMessageDialog(this, "please enter product id", "messaage", JOptionPane.WARNING_MESSAGE);
+//            } else {
+//
+//                ResultSet rs = MySQL.execute("SELECT * FROM `product` "
+//                        + "INNER JOIN `brand` ON `product`.`brand_id` = `brand`.`id` "
+//                        + "INNER JOIN `stock` ON `stock`.`product_id` = `product`.`id` "
+//                        + "WHERE product.id ='" + productid + "'");
+//
+//                DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+//                model.setRowCount(0);
+//
+//                while (rs.next()) {
+//
+//                    Vector v = new Vector();
+//                    v.add(String.valueOf(rs.getInt("id")));
+//                    v.add(rs.getString("name"));
+//                    v.add(rs.getString("brand"));
+//                    v.add(rs.getString("selling_price"));
+//                    v.add(rs.getString("qty"));
+//                    v.add(rs.getString("add_date"));
+//
+//                    model.addRow(v);
+//
+//                }
+//
+//            }
+//
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+        loadstock();
 
-        try {
-            if (productid.isEmpty()) {
-                JOptionPane.showMessageDialog(this, "please enter product id", "messaage", JOptionPane.WARNING_MESSAGE);
-            } else {
-
-                ResultSet rs = MySQL.execute("SELECT * FROM `product` "
-                        + "INNER JOIN `brand` ON `product`.`brand_id` = `brand`.`id` "
-                        + "INNER JOIN `stock` ON `stock`.`product_id` = `product`.`id` "
-                        + "WHERE product.id ='" + productid + "'");
-
-                DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
-                model.setRowCount(0);
-
-                while (rs.next()) {
-
-                    Vector v = new Vector();
-                    v.add(String.valueOf(rs.getInt("id")));
-                    v.add(rs.getString("name"));
-                    v.add(rs.getString("brand"));
-                    v.add(rs.getString("selling_price"));
-                    v.add(rs.getString("qty"));
-                    v.add(rs.getString("add_date"));
-
-                    model.addRow(v);
-
-                }
-
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed

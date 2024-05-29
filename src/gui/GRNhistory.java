@@ -4,6 +4,7 @@
  */
 package gui;
 
+import static gui.SignIn.logger;
 import java.sql.ResultSet;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -75,7 +76,7 @@ public class GRNhistory extends javax.swing.JPanel {
             }
 
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.log(Level.WARNING, "An error occurred while trying to log in", e);
         }
     }
 
@@ -369,7 +370,7 @@ public class GRNhistory extends javax.swing.JPanel {
             }
 
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.log(Level.WARNING, "An error occurred while trying to log in", e);
         }
     }//GEN-LAST:event_jTable6MouseClicked
 

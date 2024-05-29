@@ -1,15 +1,13 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
- */
 package gui;
 
 import com.formdev.flatlaf.FlatClientProperties;
+import static gui.SignIn.logger;
 import gui.popUps.brandManage;
 import gui.popUps.categoryManage;
 import java.sql.ResultSet;
 import java.util.HashMap;
 import java.util.Vector;
+import java.util.logging.Level;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
@@ -18,10 +16,6 @@ import raven.popup.DefaultOption;
 import raven.popup.GlassPanePopup;
 import raven.popup.component.SimplePopupBorder;
 
-/**
- *
- * @author Chethana
- */
 public class ProductManage extends javax.swing.JPanel {
 
     /**
@@ -50,9 +44,7 @@ public class ProductManage extends javax.swing.JPanel {
 
                 String name = rs.getString("brand");
                 String id = String.valueOf(rs.getString("id"));
-
                 brandMap.put(name, id);
-
                 vector.add(name);
 
             }
@@ -62,7 +54,7 @@ public class ProductManage extends javax.swing.JPanel {
             jComboBox4.setModel(model1);
 
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.log(Level.WARNING, "Somthing went wrong!", e);
         }
     }
 
@@ -88,7 +80,7 @@ public class ProductManage extends javax.swing.JPanel {
             catagoryComboBox.setModel(model1);
 
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.log(Level.WARNING, "Somthing went wrong!", e);
         }
     }
 
@@ -96,11 +88,11 @@ public class ProductManage extends javax.swing.JPanel {
 
         String query = "SELECT * FROM `product` INNER JOIN `brand` ON `brand`.`id` =`product`.`brand_id` INNER JOIN `category` ON `category`.`id` =`product`.`category_id`";
 
-        if (!jTextField1.getText().isEmpty()) {
+        if (!idField.getText().isEmpty()) {
             if (query.contains("WHERE")) {
-                query += " AND `product`.`id` ='" + jTextField1.getText() + "'";
+                query += " AND `product`.`id` ='" + idField.getText() + "'";
             } else {
-                query += " WHERE `product`. `id`='" + jTextField1.getText() + "'";
+                query += " WHERE `product`. `id`='" + idField.getText() + "'";
             }
         }
 
@@ -140,14 +132,6 @@ public class ProductManage extends javax.swing.JPanel {
             query += "`brand`.`brand` DESC";
         }
 
-//               if(query.contains("WHERE")){
-//            query+=" AND ";
-//               }
-//                 if(jComboBox2.getSelectedIndex()!=0){
-//            query+="`category_id` ='"+categoryMap.get(String.valueOf(jComboBox2.getSelectedItem()))+"'";
-//            }
-//                 
-        System.out.println(query);
         try {
 
             ResultSet rs = MySQL.execute(query);
@@ -171,16 +155,17 @@ public class ProductManage extends javax.swing.JPanel {
                 model.addRow(vector);
             }
         } catch (Exception e) {
-            e.printStackTrace();
-        }
+            logger.log(Level.WARNING, "Somthing went wrong!", e);
 
+        }
     }
 
+    //validation pass varible
     boolean x = false;
 
     private void validation() {
-        String id = jTextField1.getText();
-        String name = jTextField2.getText();
+        String id = idField.getText();
+        String name = nameField.getText();
         String brand = brandMap.get(jComboBox1.getSelectedItem());
         String category = categoryMap.get(jComboBox2.getSelectedItem());
 
@@ -201,12 +186,12 @@ public class ProductManage extends javax.swing.JPanel {
     }
 
     private void reset() {
-        jTextField1.setText(null);
-        jTextField2.setText(null);
+        idField.setText(null);
+        nameField.setText(null);
         jTextField3.setText(null);
         jComboBox1.setSelectedIndex(0);
         jComboBox2.setSelectedIndex(0);
-        jTextField1.setEditable(true);
+        idField.setEditable(true);
         LoadProducts();
         loadBrand();
         LoadCategory();
@@ -235,18 +220,18 @@ public class ProductManage extends javax.swing.JPanel {
         SearchProduct = new javax.swing.JTextField();
         jComboBox4 = new javax.swing.JComboBox<>();
         catagoryComboBox = new javax.swing.JComboBox<>();
-        jButton2 = new javax.swing.JButton();
-        jButton1 = new javax.swing.JButton();
+        addProductButton = new javax.swing.JButton();
+        updateProductButton = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
         jLabel10 = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
         jLabel6 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
+        idField = new javax.swing.JTextField();
         jComboBox1 = new javax.swing.JComboBox<>();
         jLabel3 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        jTextField2 = new javax.swing.JTextField();
+        nameField = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
         jComboBox2 = new javax.swing.JComboBox<>();
         jLabel5 = new javax.swing.JLabel();
@@ -332,11 +317,6 @@ public class ProductManage extends javax.swing.JPanel {
             }
         });
 
-        SearchProduct.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                SearchProductActionPerformed(evt);
-            }
-        });
         SearchProduct.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 SearchProductKeyReleased(evt);
@@ -349,11 +329,6 @@ public class ProductManage extends javax.swing.JPanel {
                 jComboBox4ItemStateChanged(evt);
             }
         });
-        jComboBox4.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jComboBox4ActionPerformed(evt);
-            }
-        });
 
         catagoryComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         catagoryComboBox.addItemListener(new java.awt.event.ItemListener() {
@@ -362,17 +337,17 @@ public class ProductManage extends javax.swing.JPanel {
             }
         });
 
-        jButton2.setText("Add");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        addProductButton.setText("Add");
+        addProductButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                addProductButtonActionPerformed(evt);
             }
         });
 
-        jButton1.setText("Update");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        updateProductButton.setText("Update");
+        updateProductButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                updateProductButtonActionPerformed(evt);
             }
         });
 
@@ -399,9 +374,9 @@ public class ProductManage extends javax.swing.JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 305, Short.MAX_VALUE)
-                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(addProductButton, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(updateProductButton, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
         productListHeaderLayout.setVerticalGroup(
@@ -413,8 +388,8 @@ public class ProductManage extends javax.swing.JPanel {
                     .addComponent(SearchProduct, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jComboBox4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(catagoryComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton2)
-                    .addComponent(jButton1)
+                    .addComponent(addProductButton)
+                    .addComponent(updateProductButton)
                     .addComponent(jButton3))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -432,37 +407,15 @@ public class ProductManage extends javax.swing.JPanel {
 
         jLabel1.setText("ID :");
 
-        jTextField1.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                jTextField1KeyReleased(evt);
-            }
-        });
-
         jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        jComboBox1.addItemListener(new java.awt.event.ItemListener() {
-            public void itemStateChanged(java.awt.event.ItemEvent evt) {
-                jComboBox1ItemStateChanged(evt);
-            }
-        });
 
         jLabel3.setText("Brand :");
 
         jLabel2.setText("Name :");
 
-        jTextField2.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                jTextField2KeyReleased(evt);
-            }
-        });
-
         jLabel4.setText("Category :");
 
         jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        jComboBox2.addItemListener(new java.awt.event.ItemListener() {
-            public void itemStateChanged(java.awt.event.ItemEvent evt) {
-                jComboBox2ItemStateChanged(evt);
-            }
-        });
 
         jLabel5.setText("Warranty  :");
 
@@ -483,10 +436,10 @@ public class ProductManage extends javax.swing.JPanel {
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel2Layout.createSequentialGroup()
                                 .addGap(24, 24, 24)
-                                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 242, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(idField, javax.swing.GroupLayout.PREFERRED_SIZE, 242, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(jPanel2Layout.createSequentialGroup()
                                 .addGap(25, 25, 25)
-                                .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 242, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                .addComponent(nameField, javax.swing.GroupLayout.PREFERRED_SIZE, 242, javax.swing.GroupLayout.PREFERRED_SIZE))))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel2Layout.createSequentialGroup()
@@ -513,11 +466,11 @@ public class ProductManage extends javax.swing.JPanel {
                 .addGap(18, 18, 18)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(idField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
-                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(nameField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 35, Short.MAX_VALUE)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
@@ -571,11 +524,11 @@ public class ProductManage extends javax.swing.JPanel {
 
     private void productTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_productTableMouseClicked
         // TODO add your handling code here:
-        jTextField1.setEditable(false);
+        idField.setEditable(false);
         int row = productTable.getSelectedRow();
 
-        jTextField1.setText(String.valueOf(productTable.getValueAt(row, 0)));
-        jTextField2.setText(String.valueOf(productTable.getValueAt(row, 1)));
+        idField.setText(String.valueOf(productTable.getValueAt(row, 0)));
+        nameField.setText(String.valueOf(productTable.getValueAt(row, 1)));
         jTextField3.setText(String.valueOf(productTable.getValueAt(row, 4)));
         jComboBox1.setSelectedItem(String.valueOf(productTable.getValueAt(row, 2)));
         jComboBox2.setSelectedItem(String.valueOf(productTable.getValueAt(row, 3)));
@@ -583,8 +536,7 @@ public class ProductManage extends javax.swing.JPanel {
 
     }//GEN-LAST:event_productTableMouseClicked
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        // TODO add your handling code here:
+    private void addProductButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addProductButtonActionPerformed
 
         validation();
 
@@ -593,27 +545,25 @@ public class ProductManage extends javax.swing.JPanel {
             System.out.println(x);
             if (x == true) {
 
-                ResultSet rs = MySQL.execute("SELECT * FROM `product` WHERE `id` = '" + jTextField1.getText() + "' OR (`name` ='" + jTextField2.getText() + "' AND `brand_id`='" + brandMap.get(String.valueOf(jComboBox1.getSelectedItem())) + "')");
+                ResultSet rs = MySQL.execute("SELECT * FROM `product` WHERE `id` = '" + idField.getText() + "' OR (`name` ='" + nameField.getText() + "' AND `brand_id`='" + brandMap.get(String.valueOf(jComboBox1.getSelectedItem())) + "')");
 
                 if (rs.next()) {
                     JOptionPane.showMessageDialog(this, "Product Already Added", "Alertl", JOptionPane.PLAIN_MESSAGE);
                 } else {
-                    MySQL.execute("INSERT INTO `product`(`id`,`name`,`warranty_period`,`brand_id`,`category_id`) VALUES ('" + jTextField1.getText() + "','" + jTextField2.getText() + "','" + jTextField3.getText() + "','" + brandMap.get(String.valueOf(jComboBox1.getSelectedItem())) + "','" + categoryMap.get(String.valueOf(jComboBox2.getSelectedItem())) + "')");
+                    MySQL.execute("INSERT INTO `product`(`id`,`name`,`warranty_period`,`brand_id`,`category_id`) VALUES ('" + idField.getText() + "','" + nameField.getText() + "','" + jTextField3.getText() + "','" + brandMap.get(String.valueOf(jComboBox1.getSelectedItem())) + "','" + categoryMap.get(String.valueOf(jComboBox2.getSelectedItem())) + "')");
                     JOptionPane.showMessageDialog(this, "Product Added", "Succesfull", JOptionPane.PLAIN_MESSAGE);
                     reset();
                 }
-
             }
-
         } catch (Exception e) {
-            System.out.println(e);
+            logger.log(Level.WARNING, "Somthing went wrong!", e);
         }
         LoadProducts();
 
 
-    }//GEN-LAST:event_jButton2ActionPerformed
+    }//GEN-LAST:event_addProductButtonActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void updateProductButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateProductButtonActionPerformed
 
         if (productTable.getSelectedRow() == -1) {
 
@@ -623,57 +573,28 @@ public class ProductManage extends javax.swing.JPanel {
                 validation();
                 System.out.println(x);
                 if (x == true) {
-                    MySQL.execute("UPDATE `product` SET  `name` ='" + jTextField2.getText() + "',`warranty_period`='" + jTextField3.getText() + "',`brand_id`='" + brandMap.get(String.valueOf(jComboBox1.getSelectedItem())) + "',`category_id`='" + categoryMap.get(String.valueOf(jComboBox2.getSelectedItem())) + "' WHERE `id`='" + jTextField1.getText() + "'");
+                    MySQL.execute("UPDATE `product` SET  `name` ='" + nameField.getText() + "',`warranty_period`='" + jTextField3.getText() + "',`brand_id`='" + brandMap.get(String.valueOf(jComboBox1.getSelectedItem())) + "',`category_id`='" + categoryMap.get(String.valueOf(jComboBox2.getSelectedItem())) + "' WHERE `id`='" + idField.getText() + "'");
                     JOptionPane.showMessageDialog(this, "Product Updated", "Succesfull", JOptionPane.PLAIN_MESSAGE);
                     reset();
-
                 }
-
             } catch (Exception e) {
-                e.printStackTrace();
+                logger.log(Level.WARNING, "Somthing went wrong!", e);
             }
         }
 
-    }//GEN-LAST:event_jButton1ActionPerformed
-
-    private void jTextField1KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField1KeyReleased
-        // TODO add your handling code here:
-
-
-    }//GEN-LAST:event_jTextField1KeyReleased
-
-    private void jComboBox1ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jComboBox1ItemStateChanged
-        // TODO add your handling code here:
-
-    }//GEN-LAST:event_jComboBox1ItemStateChanged
-
-    private void jComboBox2ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jComboBox2ItemStateChanged
-        // TODO add your handling code here:
-
-    }//GEN-LAST:event_jComboBox2ItemStateChanged
-
-    private void jTextField2KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField2KeyReleased
-        // TODO add your handling code here:
-
-    }//GEN-LAST:event_jTextField2KeyReleased
+    }//GEN-LAST:event_updateProductButtonActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        // TODO add your handling code here:
         reset();
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jComboBox3ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jComboBox3ItemStateChanged
-        // TODO add your handling code here:
         LoadProducts();
     }//GEN-LAST:event_jComboBox3ItemStateChanged
 
     private void SearchProductKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_SearchProductKeyReleased
         LoadProducts();
     }//GEN-LAST:event_SearchProductKeyReleased
-
-    private void jComboBox4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox4ActionPerformed
-
-    }//GEN-LAST:event_jComboBox4ActionPerformed
 
     private void catagoryComboBoxItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_catagoryComboBoxItemStateChanged
         LoadProducts();
@@ -704,8 +625,6 @@ public class ProductManage extends javax.swing.JPanel {
                 pc.closePopup();
             }
         }), option);
-
-
     }//GEN-LAST:event_brandManageButtonActionPerformed
 
     private void categoryManageButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_categoryManageButtonActionPerformed
@@ -725,21 +644,16 @@ public class ProductManage extends javax.swing.JPanel {
                 pc.closePopup();
             }
         }), option);
-
     }//GEN-LAST:event_categoryManageButtonActionPerformed
-
-    private void SearchProductActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SearchProductActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_SearchProductActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField SearchProduct;
+    private javax.swing.JButton addProductButton;
     private javax.swing.JButton brandManageButton;
     private javax.swing.JComboBox<String> catagoryComboBox;
     private javax.swing.JButton categoryManageButton;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
+    private javax.swing.JTextField idField;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
     private javax.swing.JComboBox<String> jComboBox1;
@@ -757,11 +671,11 @@ public class ProductManage extends javax.swing.JPanel {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
     private javax.swing.JTextField jTextField3;
+    private javax.swing.JTextField nameField;
     private javax.swing.JPanel productListHeader;
     private javax.swing.JPanel productListWrapper;
     private javax.swing.JTable productTable;
+    private javax.swing.JButton updateProductButton;
     // End of variables declaration//GEN-END:variables
 }

@@ -1,11 +1,13 @@
 package gui.dialog;
 
+import static gui.SignIn.logger;
 import java.net.URL;
 import java.sql.ResultSet;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Vector;
+import java.util.logging.Level;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import model.MySQL;
@@ -94,11 +96,13 @@ public class SL_and_SM_and_TC_and_PL_Report extends javax.swing.JPanel {
                 JasperPrint jasperPrint = JasperFillManager.fillReport(getClass().getResourceAsStream("/report/stock_level.jasper"), parameters, tmd);
                 JasperViewer.viewReport(jasperPrint, false);
             } catch (JRException ex) {
-                System.out.println("Couldnot Load Data"+ex);
+                logger.log(Level.WARNING, SL_and_SM_and_TC_and_PL_Report.class.getName(), ex);
+
             }
 
         } catch (Exception ex) {
-            System.out.println("Couldnot Load Data"+ex);
+            logger.log(Level.WARNING, SL_and_SM_and_TC_and_PL_Report.class.getName(), ex);
+
         }
 
     }
@@ -185,11 +189,13 @@ public class SL_and_SM_and_TC_and_PL_Report extends javax.swing.JPanel {
                 JasperPrint jasperPrint = JasperFillManager.fillReport(getClass().getResourceAsStream("/report/stock_movement.jasper"), parameters, tmd);
                 JasperViewer.viewReport(jasperPrint, false);
             } catch (JRException ex) {
-                System.out.println("Couldnot Load Data"+ex);
+                logger.log(Level.WARNING, SL_and_SM_and_TC_and_PL_Report.class.getName(), ex);
+
             }
 
         } catch (Exception ex) {
-            System.out.println("Couldnot Load Data"+ex);
+            logger.log(Level.WARNING, SL_and_SM_and_TC_and_PL_Report.class.getName(), ex);
+
         }
 
     }
@@ -229,7 +235,8 @@ public class SL_and_SM_and_TC_and_PL_Report extends javax.swing.JPanel {
 
             }
         } catch (Exception e) {
-            System.out.println("Couldnot Load Data"+e);
+            logger.log(Level.WARNING, SL_and_SM_and_TC_and_PL_Report.class.getName(), e);
+
         }
 
         DefaultTableModel dtm = new DefaultTableModel();
@@ -274,7 +281,8 @@ public class SL_and_SM_and_TC_and_PL_Report extends javax.swing.JPanel {
             JasperPrint jasperPrint = JasperFillManager.fillReport(getClass().getResourceAsStream("/report/top_customers.jasper"), parameters, tmd);
             JasperViewer.viewReport(jasperPrint, false);
         } catch (JRException ex) {
-            System.out.println("Couldnot Load Data"+ex);
+            logger.log(Level.WARNING, SL_and_SM_and_TC_and_PL_Report.class.getName(), ex);
+
         }
 
     }
@@ -293,7 +301,8 @@ public class SL_and_SM_and_TC_and_PL_Report extends javax.swing.JPanel {
                 totalRevenue = revenueRs.getDouble("totalRevenue");
             }
         } catch (Exception ex) {
-            System.out.println("Couldnot Load Data"+ex);
+            logger.log(Level.WARNING, SL_and_SM_and_TC_and_PL_Report.class.getName(), ex);
+
         }
 
         String cost = "SELECT SUM(`grn`.`paid_amount`) AS `totalCost` FROM `grn` "
@@ -304,7 +313,8 @@ public class SL_and_SM_and_TC_and_PL_Report extends javax.swing.JPanel {
                 totalCost = costRs.getDouble("totalCost");
             }
         } catch (Exception ex) {
-            System.out.println("Couldnot Load Data"+ex);
+            logger.log(Level.WARNING, SL_and_SM_and_TC_and_PL_Report.class.getName(), ex);
+
         }
 
         profit = totalRevenue - totalCost;
@@ -327,11 +337,12 @@ public class SL_and_SM_and_TC_and_PL_Report extends javax.swing.JPanel {
 
         try {
             JREmptyDataSource eds = new JREmptyDataSource();
-                    
-            JasperPrint jasperPrint = JasperFillManager.fillReport(getClass().getResourceAsStream("/report/profit_and_loss_report.jasper"), parameters,eds);
+
+            JasperPrint jasperPrint = JasperFillManager.fillReport(getClass().getResourceAsStream("/report/profit_and_loss_report.jasper"), parameters, eds);
             JasperViewer.viewReport(jasperPrint, false);
         } catch (JRException ex) {
-            System.out.println("Couldnot Load Data"+ex);
+            logger.log(Level.WARNING, SL_and_SM_and_TC_and_PL_Report.class.getName(), ex);
+
         }
 
     }

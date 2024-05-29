@@ -1,7 +1,9 @@
 package gui.popUps;
 
+import static gui.SignIn.logger;
 import java.sql.ResultSet;
 import java.util.Vector;
+import java.util.logging.Level;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import model.MySQL;
@@ -30,7 +32,7 @@ public class brandManage extends javax.swing.JPanel {
                 model.addRow(vector);
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.log(Level.WARNING, "Something went Wrong!", e);
         }
     }
 
@@ -160,7 +162,7 @@ public class brandManage extends javax.swing.JPanel {
                 }
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.log(Level.WARNING, "Something went Wrong!", e);
         }
 
     }//GEN-LAST:event_addButtonActionPerformed
@@ -172,7 +174,6 @@ public class brandManage extends javax.swing.JPanel {
     private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
         int row = jTable1.getSelectedRow();
         brandTextField.setText(String.valueOf(jTable1.getValueAt(row, 1)));
-
     }//GEN-LAST:event_jTable1MouseClicked
 
     private void updateButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateButtonActionPerformed
@@ -188,10 +189,9 @@ public class brandManage extends javax.swing.JPanel {
                 try {
                     MySQL.execute("UPDATE `brand` SET `brand` = '" + brandName + "' WHERE `id` = '" + brandID + "'   ");
                     JOptionPane.showMessageDialog(this, "Brand Updated!", "Succesfull", JOptionPane.PLAIN_MESSAGE);
-
                     reset();
-
                 } catch (Exception e) {
+                    logger.log(Level.WARNING, "Something went Wrong!", e);
                 }
             }
         }

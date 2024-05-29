@@ -1,6 +1,7 @@
 package gui.dialog;
 
 import com.formdev.flatlaf.FlatDarkLaf;
+import static gui.SignIn.logger;
 import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import javax.swing.table.DefaultTableModel;
@@ -10,6 +11,7 @@ import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import java.sql.ResultSet;
 import java.util.Vector;
+import java.util.logging.Level;
 import net.sf.jasperreports.view.JasperViewer;
 
 public class ReportPanel extends javax.swing.JDialog {
@@ -59,6 +61,11 @@ public class ReportPanel extends javax.swing.JDialog {
         jComboBox1.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 jComboBox1ItemStateChanged(evt);
+            }
+        });
+        jComboBox1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBox1ActionPerformed(evt);
             }
         });
 
@@ -208,7 +215,8 @@ public class ReportPanel extends javax.swing.JDialog {
             }
             
         } catch (Exception ex) {
-            System.out.println("Couldnot Load Data"+ex);
+                                    logger.log(Level.WARNING, ReportPanel.class.getName(), ex);
+
         }
         
         HashMap<String, Object> parameters = new HashMap<>();
@@ -218,10 +226,15 @@ public class ReportPanel extends javax.swing.JDialog {
             JasperPrint jasperPrint = JasperFillManager.fillReport(getClass().getResourceAsStream("/Report/AllEmployeeReport.jasper"), parameters);
             JasperViewer.viewReport(jasperPrint, false);
         } catch (JRException ex) {
-            System.out.println("Couldnot Load Data"+ex);
+                                    logger.log(Level.WARNING, ReportPanel.class.getName(), ex);
+
         }
 
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jComboBox1ActionPerformed
 
     public static void main(String args[]) {
 

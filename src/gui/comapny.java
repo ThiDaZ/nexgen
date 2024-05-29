@@ -4,8 +4,10 @@
  */
 package gui;
 
+import static gui.SignIn.logger;
 import java.sql.ResultSet;
 import java.util.Vector;
+import java.util.logging.Level;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import model.MySQL;
@@ -40,7 +42,7 @@ public class comapny extends javax.swing.JDialog {
             }
 
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.log(Level.WARNING, "An error occurred while trying to log in", e);
         }
     }
 
@@ -224,7 +226,7 @@ public class comapny extends javax.swing.JDialog {
 
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.log(Level.WARNING, "An error occurred while trying to log in", e);
         }
 
 
@@ -261,7 +263,7 @@ public class comapny extends javax.swing.JDialog {
                 }
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.log(Level.WARNING, "An error occurred while trying to log in", e);
         }
 
 

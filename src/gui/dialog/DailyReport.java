@@ -1,11 +1,13 @@
 package gui.dialog;
 
+import static gui.SignIn.logger;
 import java.net.URL;
 import java.sql.ResultSet;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Vector;
+import java.util.logging.Level;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import model.MySQL;
@@ -93,7 +95,8 @@ public class DailyReport extends javax.swing.JPanel {
             }
 
         } catch (Exception ex) {
-            System.out.println("Couldnot Load Data"+ex);
+            logger.log(Level.WARNING, DailyReport.class.getName(), ex);
+
         }
 
         HashMap<String, Object> parameters = new HashMap<>();
@@ -117,7 +120,8 @@ public class DailyReport extends javax.swing.JPanel {
             JasperPrint jasperPrint = JasperFillManager.fillReport(getClass().getResourceAsStream("/report/daily_report.jasper"), parameters, tmd);
             JasperViewer.viewReport(jasperPrint, false);
         } catch (JRException ex) {
-            System.out.println("Couldnot Load Data"+ex);
+            logger.log(Level.WARNING, DailyReport.class.getName(), ex);
+
         }
 
     }

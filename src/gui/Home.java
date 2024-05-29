@@ -21,10 +21,6 @@ import raven.popup.DefaultOption;
 import raven.popup.GlassPanePopup;
 import raven.popup.component.SimplePopupBorder;
 
-/**
- *
- * @author thidas
- */
 public class Home extends javax.swing.JFrame {
 
     private UserModel user;
@@ -49,9 +45,7 @@ public class Home extends javax.swing.JFrame {
     private Dashboard dashboard;
     private UserManage userManage;
     private ProductManage productManage;
-    private SaleManage salaManage;
     private InventoryManage inventoryManage;
-//    private Reporting reporting;
     private CustomerManage customerManage;
     private GRN grn;
     private GRNhistory grnHistory;
@@ -65,7 +59,6 @@ public class Home extends javax.swing.JFrame {
         init();
         addDashboard();
         time();
-
     }
 
     private void time() {
@@ -76,17 +69,8 @@ public class Home extends javax.swing.JFrame {
             timeLabel.setText(time);
         };
         Timer timer = new Timer(1000, timerListener);
-        // to make sure it doesn't wait one second at the start
         timer.setInitialDelay(0);
         timer.start();
-
-        if (user != null) {
-            System.out.println("user not null");
-        } else {
-            System.out.println("user null");
-
-        }
-
     }
 
     private void init() {
@@ -182,13 +166,11 @@ public class Home extends javax.swing.JFrame {
                 checkColor(name);
                 activeButton = null;
             }
-
             activeButton = dashboardButton;
             activeButton.setBackground(myWhite);
             activeButton.setForeground(myBlack);
             activeButton.setIcon(dashboardDark);
         }
-
         if (dashboard == null) {
             dashboard = new Dashboard();
         }
@@ -209,7 +191,6 @@ public class Home extends javax.swing.JFrame {
                 checkColor(name);
                 activeButton = null;
             }
-
             activeButton = userManageButton;
             activeButton.setBackground(myWhite);
             activeButton.setForeground(myBlack);
@@ -235,7 +216,6 @@ public class Home extends javax.swing.JFrame {
                 checkColor(name);
                 activeButton = null;
             }
-
             activeButton = productManageButton;
             activeButton.setBackground(myWhite);
             activeButton.setForeground(myBlack);
@@ -261,7 +241,6 @@ public class Home extends javax.swing.JFrame {
                 checkColor(name);
                 activeButton = null;
             }
-
             activeButton = salesManageButton;
             activeButton.setBackground(myWhite);
             activeButton.setForeground(myBlack);
@@ -279,7 +258,6 @@ public class Home extends javax.swing.JFrame {
             String name = activeButton.getText();
             System.out.println(name + " Already active " + activeButton);
         } else {
-
             if (activeButton != null) {
                 String name = activeButton.getText();
                 activeButton.setBackground(myBlack);
@@ -287,7 +265,6 @@ public class Home extends javax.swing.JFrame {
                 checkColor(name);
                 activeButton = null;
             }
-
             activeButton = inventoryManageButton;
             activeButton.setBackground(myWhite);
             activeButton.setForeground(myBlack);
@@ -313,7 +290,6 @@ public class Home extends javax.swing.JFrame {
                 checkColor(name);
                 activeButton = null;
             }
-
             activeButton = customerManageButton;
             activeButton.setBackground(myWhite);
             activeButton.setForeground(myBlack);
@@ -339,13 +315,11 @@ public class Home extends javax.swing.JFrame {
                 checkColor(name);
                 activeButton = null;
             }
-
             activeButton = repotingButton;
             activeButton.setBackground(myWhite);
             activeButton.setForeground(myBlack);
             activeButton.setIcon(reportingDark);
         }
-
     }
 
     public void addGrn() {
@@ -728,7 +702,6 @@ public class Home extends javax.swing.JFrame {
         String actions[] = new String[]{};
         GlassPanePopup.showPopup(new SimplePopupBorder(profile, "Profile", actions, (pc, i) -> {
             if (i == 1) {
-                //save
                 return;
             } else {
                 pc.closePopup();

@@ -1,7 +1,9 @@
 package gui.popUps;
 
+import static gui.SignIn.logger;
 import java.sql.ResultSet;
 import java.util.Vector;
+import java.util.logging.Level;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import model.MySQL;
@@ -160,9 +162,8 @@ public class categoryManage extends javax.swing.JPanel {
                 }
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.log(Level.WARNING, "Somthing went wrong!", e);
         }
-
     }//GEN-LAST:event_addButtonActionPerformed
 
     private void resetButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_resetButtonActionPerformed
@@ -172,7 +173,6 @@ public class categoryManage extends javax.swing.JPanel {
     private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
         int row = jTable1.getSelectedRow();
         categoryTextField.setText(String.valueOf(jTable1.getValueAt(row, 1)));
-
     }//GEN-LAST:event_jTable1MouseClicked
 
     private void updateButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateButtonActionPerformed
@@ -192,11 +192,11 @@ public class categoryManage extends javax.swing.JPanel {
                     reset();
 
                 } catch (Exception e) {
+                    logger.log(Level.WARNING, "Somthing went wrong!", e);
                 }
             }
         }
     }//GEN-LAST:event_updateButtonActionPerformed
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton addButton;

@@ -1,35 +1,25 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
- */
 package gui;
 
+import static gui.SignIn.logger;
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 import model.MySQL;
 import java.sql.ResultSet;
 import java.util.Vector;
+import java.util.logging.Level;
 import javax.swing.table.DefaultTableModel;
 import raven.chart.ModelChart;
 import model.ChartModel;
 
-/**
- *
- * @author thidas
- */
 public class Dashboard extends javax.swing.JPanel {
 
-    /**
-     * Creates new form Dashboard
-     */
     public Dashboard() {
         initComponents();
 
         chart.setTitle("");
         chart.addLegend("summary", Color.decode("#26a0da"), Color.decode("#314755"));
-//        chart.addLegend("Monthly", Color.decode("#e65c00"), Color.decode("#f9d433"));
-//        chart.addLegend("yearly", Color.decode("#cc2b5e"), Color.decode("#753a88"));
+        chart.setForeground(Color.white);
 
         setData();
         lowStock();
@@ -38,7 +28,6 @@ public class Dashboard extends javax.swing.JPanel {
 
     private void topCustomer() {
         try {
-
             ResultSet rs = MySQL.execute("SELECT `customer`.`fname`, `customer`.`lname`, SUM(invoice.paid_amount) AS total_paid_amount "
                     + "FROM `customer` "
                     + "INNER JOIN `invoice` ON `invoice`.`customer_mobile` = `customer`.`mobile` "
@@ -55,21 +44,17 @@ public class Dashboard extends javax.swing.JPanel {
                 Vector v = new Vector();
                 x = x + 1;
                 v.add(String.valueOf(x));
-
                 v.add(rs.getString("fname"));
 
                 model.addRow(v);
-
             }
-
         } catch (Exception e) {
-
+            logger.log(Level.WARNING, "Somthing went worng!", e);
         }
     }
 
     private void lowStock() {
         try {
-
             ResultSet rs = MySQL.execute("SELECT product.id AS product_id, product.name AS product_name, brand.brand AS brand, MIN(stock.qty) AS min_qty FROM stock "
                     + "INNER JOIN product ON product.id = stock.product_id "
                     + "INNER JOIN brand ON brand.id = product.brand_id "
@@ -86,11 +71,10 @@ public class Dashboard extends javax.swing.JPanel {
                 v.add(String.valueOf(rs.getInt("min_qty")));
 
                 model.addRow(v);
-
             }
-
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.log(Level.WARNING, "Somthing went worng!", e);
+
         }
     }
 
@@ -99,25 +83,19 @@ public class Dashboard extends javax.swing.JPanel {
             List<ChartModel> list = new ArrayList<>();
 
             ResultSet rs = MySQL.execute("SELECT DATE_FORMAT(MAX(date), '%M') AS 'Month', SUM(paid_amount) AS Sales FROM `invoice` GROUP BY DATE_FORMAT(date, '%m%Y') ORDER BY DATE_FORMAT(MAX(date), '%m%Y');");
-
             while (rs.next()) {
                 String month = rs.getString("Month");
                 double sales = rs.getDouble("Sales");
                 list.add(new ChartModel(month, sales));
             }
 
-//            System.out.println("Contents of the list:");
-//            for (ChartModel model : list) {
-//                System.out.println(model.getMonth() + "-" + model.getSales());
-//            }
             for (int i = list.size() - 1; i >= 0; i--) {
                 ChartModel model = list.get(i);
-//                System.out.println(model);
                 chart.addData(new ModelChart(model.getMonth(), new double[]{model.getSales()}));
             }
             chart.start();
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.log(Level.WARNING, "somthing went wrong", e);
         }
     }
 

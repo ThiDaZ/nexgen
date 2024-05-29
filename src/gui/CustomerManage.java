@@ -4,6 +4,7 @@
  */
 package gui;
 
+import static gui.SignIn.logger;
 import java.awt.Color;
 import java.sql.ResultSet;
 import java.util.HashMap;
@@ -63,6 +64,8 @@ public class CustomerManage extends javax.swing.JPanel {
 
         } catch (Exception e) {
             e.printStackTrace();
+                        logger.log(Level.WARNING, "Somthing went wrong", e);
+
         }
 
     }
@@ -95,6 +98,8 @@ public class CustomerManage extends javax.swing.JPanel {
             }
         } catch (Exception e) {
             e.printStackTrace();
+                        logger.log(Level.WARNING, "Somthing went wrong", e);
+
         }
 
     }
@@ -420,6 +425,8 @@ public class CustomerManage extends javax.swing.JPanel {
 
             } catch (Exception e) {
                 e.printStackTrace();
+                            logger.log(Level.WARNING, "Somthing went wrong", e);
+
             }
         }
 
