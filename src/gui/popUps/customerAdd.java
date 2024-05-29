@@ -4,16 +4,25 @@
  */
 package gui.popUps;
 
+import gui.SaleManage;
 import java.sql.ResultSet;
 import java.util.Vector;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import model.MySQL;
+import raven.popup.GlassPanePopup;
 
 /**
  *
  * @author thida
  */
 public class customerAdd extends javax.swing.JPanel {
+
+    private SaleManage salesManage;
+
+    public void setSalesmange(SaleManage salesmange) {
+        this.salesManage = salesmange;
+    }
 
     private void loadTable() {
         try {
@@ -52,6 +61,7 @@ public class customerAdd extends javax.swing.JPanel {
     public customerAdd() {
         initComponents();
         loadTable();
+        jButton1.setEnabled(false);
     }
 
     /**
@@ -83,16 +93,26 @@ public class customerAdd extends javax.swing.JPanel {
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, true, false
+                false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
             }
         });
+        jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTable1MouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(jTable1);
 
         jButton1.setText("Select");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         jTextField1.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
@@ -180,6 +200,34 @@ public class customerAdd extends javax.swing.JPanel {
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         rest();
     }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        int row = jTable1.getSelectedRow();
+
+        if (row != -1) {
+            String strMobile = String.valueOf(jTable1.getValueAt(row, 0));
+            String fname = String.valueOf(jTable1.getValueAt(row, 1));
+            String lname = String.valueOf(jTable1.getValueAt(row, 2));
+            String strPoints = String.valueOf(jTable1.getValueAt(row, 3));
+
+//            int mobile = Integer.parseInt(strMobile);
+//            int points = Integer.parseInt(strPoints);
+
+            String fullName = fname + " " + lname;
+
+            salesManage.getCustomer(strMobile, fullName, strPoints);
+            GlassPanePopup.closePopupAll();
+        } else {
+            JOptionPane.showMessageDialog(this, "Please selecte customer", "Warning", JOptionPane.WARNING_MESSAGE);
+
+        }
+
+
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
+        jButton1.setEnabled(true);
+    }//GEN-LAST:event_jTable1MouseClicked
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

@@ -74,7 +74,7 @@
               <Table columnCount="4" rowCount="4">
                 <Column editable="false" title="Mobile" type="java.lang.Object"/>
                 <Column editable="false" title="First Name" type="java.lang.Object"/>
-                <Column editable="true" title="Last Name" type="java.lang.Object"/>
+                <Column editable="false" title="Last Name" type="java.lang.Object"/>
                 <Column editable="false" title="Points" type="java.lang.Object"/>
               </Table>
             </Property>
@@ -106,6 +106,9 @@
               <TableHeader reorderingAllowed="true" resizingAllowed="true"/>
             </Property>
           </Properties>
+          <Events>
+            <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="jTable1MouseClicked"/>
+          </Events>
         </Component>
       </SubComponents>
     </Container>
@@ -113,6 +116,9 @@
       <Properties>
         <Property name="text" type="java.lang.String" value="Select"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton1ActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JTextField" name="jTextField1">
       <Events>

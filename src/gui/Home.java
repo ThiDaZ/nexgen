@@ -1,6 +1,7 @@
 package gui;
 
 import com.github.weisj.jsvg.nodes.Title;
+import gui.dialog.ReportPanel;
 import gui.popUps.Profile;
 import gui.popUps.brandManage;
 import java.awt.BorderLayout;
@@ -50,9 +51,11 @@ public class Home extends javax.swing.JFrame {
     private ProductManage productManage;
     private SaleManage salaManage;
     private InventoryManage inventoryManage;
-    private Warranty warranty;
-    private Reporting reporting;
+//    private Reporting reporting;
     private CustomerManage customerManage;
+    private GRN grn;
+    private GRNhistory grnHistory;
+    private invoice invoice;
 
     /**
      * Creates new form Home
@@ -123,10 +126,14 @@ public class Home extends javax.swing.JFrame {
     private ImageIcon salesDark = new ImageIcon("C:/Users/thida/OneDrive/Documents/NetBeansProjects/Nexgen/src/resources/icons/scale-balanced-dark.png");
     private ImageIcon inventoryWhite = new ImageIcon("C:/Users/thida/OneDrive/Documents/NetBeansProjects/Nexgen/src/resources/icons/warehouse-white.png");
     private ImageIcon inventoryDark = new ImageIcon("C:/Users/thida/OneDrive/Documents/NetBeansProjects/Nexgen/src/resources/icons/warehouse-dark.png");
-    private ImageIcon warrantyWhite = new ImageIcon("C:/Users/thida/OneDrive/Documents/NetBeansProjects/Nexgen/src/resources/icons/shield-white.png");
-    private ImageIcon warrantyDark = new ImageIcon("C:/Users/thida/OneDrive/Documents/NetBeansProjects/Nexgen/src/resources/icons/shield-dark.png");
     private ImageIcon reportingWhite = new ImageIcon("C:/Users/thida/OneDrive/Documents/NetBeansProjects/Nexgen/src/resources/icons/chart-pie-white.png");
     private ImageIcon reportingDark = new ImageIcon("C:/Users/thida/OneDrive/Documents/NetBeansProjects/Nexgen/src/resources/icons/chart-pie-dark.png");
+    private ImageIcon CustomerWhite = new ImageIcon("C:/Users/thida/OneDrive/Documents/NetBeansProjects/Nexgen/src/resources/icons/customer-white.png");
+    private ImageIcon CustomerDark = new ImageIcon("C:/Users/thida/OneDrive/Documents/NetBeansProjects/Nexgen/src/resources/icons/customer-dark.png");
+    private ImageIcon GrnWhite = new ImageIcon("C:/Users/thida/OneDrive/Documents/NetBeansProjects/Nexgen/src/resources/icons/grn-white.png");
+    private ImageIcon GrnDark = new ImageIcon("C:/Users/thida/OneDrive/Documents/NetBeansProjects/Nexgen/src/resources/icons/grn-dark.png");
+    private ImageIcon GrnHistoryWhite = new ImageIcon("C:/Users/thida/OneDrive/Documents/NetBeansProjects/Nexgen/src/resources/icons/grn-history-white.png");
+    private ImageIcon GrnHistoryDark = new ImageIcon("C:/Users/thida/OneDrive/Documents/NetBeansProjects/Nexgen/src/resources/icons/grn-history-dark.png");
 
     // chanage icon color when inactive
     public void checkColor(String x) {
@@ -146,11 +153,17 @@ public class Home extends javax.swing.JFrame {
             case "Inventory Management":
                 activeButton.setIcon(inventoryWhite);
                 break;
-            case "Warranty":
-                activeButton.setIcon(warrantyWhite);
-                break;
             case "Reporting & Analytics":
                 activeButton.setIcon(reportingWhite);
+                break;
+            case "Customer Manage":
+                activeButton.setIcon(CustomerWhite);
+                break;
+            case "GRN":
+                activeButton.setIcon(GrnWhite);
+                break;
+            case "GRN History":
+                activeButton.setIcon(GrnHistoryWhite);
                 break;
         }
     }
@@ -254,10 +267,10 @@ public class Home extends javax.swing.JFrame {
             activeButton.setForeground(myBlack);
             activeButton.setIcon(salesDark);
         }
-        if (salaManage == null) {
-            salaManage = new SaleManage();
+        if (invoice == null) {
+            invoice = new invoice(userid, username);
         }
-        bodyPanel.add(salaManage, BorderLayout.CENTER);
+        bodyPanel.add(invoice, BorderLayout.CENTER);
         SwingUtilities.updateComponentTreeUI(bodyPanel);
     }
 
@@ -287,8 +300,8 @@ public class Home extends javax.swing.JFrame {
         SwingUtilities.updateComponentTreeUI(bodyPanel);
     }
 
-    public void addWarranty() {
-        if (activeButton == warrantyButton) {
+    public void addCustomerManage() {
+        if (activeButton == customerManageButton) {
             String name = activeButton.getText();
             System.out.println(name + " Already active " + activeButton);
         } else {
@@ -301,10 +314,10 @@ public class Home extends javax.swing.JFrame {
                 activeButton = null;
             }
 
-            activeButton = warrantyButton;
+            activeButton = customerManageButton;
             activeButton.setBackground(myWhite);
             activeButton.setForeground(myBlack);
-            activeButton.setIcon(warrantyDark);
+            activeButton.setIcon(CustomerDark);
         }
         if (customerManage == null) {
             customerManage = new CustomerManage();
@@ -332,10 +345,58 @@ public class Home extends javax.swing.JFrame {
             activeButton.setForeground(myBlack);
             activeButton.setIcon(reportingDark);
         }
-        if (reporting == null) {
-            reporting = new Reporting();
+
+    }
+
+    public void addGrn() {
+        if (activeButton == grnButton) {
+            String name = activeButton.getText();
+            System.out.println(name + " Already active " + activeButton);
+        } else {
+
+            if (activeButton != null) {
+                String name = activeButton.getText();
+                activeButton.setBackground(myBlack);
+                activeButton.setForeground(myWhite);
+                checkColor(name);
+                activeButton = null;
+            }
+
+            activeButton = grnButton;
+            activeButton.setBackground(myWhite);
+            activeButton.setForeground(myBlack);
+            activeButton.setIcon(GrnDark);
         }
-        bodyPanel.add(reporting, BorderLayout.CENTER);
+        if (grn == null) {
+            grn = new GRN();
+        }
+        bodyPanel.add(grn, BorderLayout.CENTER);
+        SwingUtilities.updateComponentTreeUI(bodyPanel);
+    }
+
+    public void addGrnHistory() {
+        if (activeButton == grnHistoryButton) {
+            String name = activeButton.getText();
+            System.out.println(name + " Already active " + activeButton);
+        } else {
+
+            if (activeButton != null) {
+                String name = activeButton.getText();
+                activeButton.setBackground(myBlack);
+                activeButton.setForeground(myWhite);
+                checkColor(name);
+                activeButton = null;
+            }
+
+            activeButton = grnHistoryButton;
+            activeButton.setBackground(myWhite);
+            activeButton.setForeground(myBlack);
+            activeButton.setIcon(GrnHistoryDark);
+        }
+        if (grnHistory == null) {
+            grnHistory = new GRNhistory();
+        }
+        bodyPanel.add(grnHistory, BorderLayout.CENTER);
         SwingUtilities.updateComponentTreeUI(bodyPanel);
     }
 
@@ -371,8 +432,10 @@ public class Home extends javax.swing.JFrame {
         productManageButton = new javax.swing.JButton();
         salesManageButton = new javax.swing.JButton();
         inventoryManageButton = new javax.swing.JButton();
-        warrantyButton = new javax.swing.JButton();
+        customerManageButton = new javax.swing.JButton();
         repotingButton = new javax.swing.JButton();
+        grnButton = new javax.swing.JButton();
+        grnHistoryButton = new javax.swing.JButton();
         containerPanel = new javax.swing.JPanel();
         header = new javax.swing.JPanel();
         timeLabel = new javax.swing.JLabel();
@@ -460,24 +523,24 @@ public class Home extends javax.swing.JFrame {
             }
         });
 
-        warrantyButton.setBackground(new java.awt.Color(9, 9, 11));
-        warrantyButton.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        warrantyButton.setForeground(new java.awt.Color(250, 250, 250));
-        warrantyButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/icons/shield-white.png"))); // NOI18N
-        warrantyButton.setText("Custermer Manage");
-        warrantyButton.setBorderPainted(false);
-        warrantyButton.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        warrantyButton.setIconTextGap(16);
-        warrantyButton.addActionListener(new java.awt.event.ActionListener() {
+        customerManageButton.setBackground(new java.awt.Color(9, 9, 11));
+        customerManageButton.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        customerManageButton.setForeground(new java.awt.Color(250, 250, 250));
+        customerManageButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/icons/customer-white.png"))); // NOI18N
+        customerManageButton.setText("Customer Manage");
+        customerManageButton.setBorderPainted(false);
+        customerManageButton.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        customerManageButton.setIconTextGap(16);
+        customerManageButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                warrantyButtonActionPerformed(evt);
+                customerManageButtonActionPerformed(evt);
             }
         });
 
         repotingButton.setBackground(new java.awt.Color(9, 9, 11));
         repotingButton.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         repotingButton.setForeground(new java.awt.Color(250, 250, 250));
-        repotingButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/icons/scale-balanced-white.png"))); // NOI18N
+        repotingButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/icons/chart-pie-white.png"))); // NOI18N
         repotingButton.setText("Reporting & Analytics");
         repotingButton.setBorderPainted(false);
         repotingButton.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
@@ -488,21 +551,53 @@ public class Home extends javax.swing.JFrame {
             }
         });
 
+        grnButton.setBackground(new java.awt.Color(9, 9, 11));
+        grnButton.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        grnButton.setForeground(new java.awt.Color(250, 250, 250));
+        grnButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/icons/grn-white.png"))); // NOI18N
+        grnButton.setText("GRN");
+        grnButton.setBorderPainted(false);
+        grnButton.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        grnButton.setIconTextGap(16);
+        grnButton.setMargin(new java.awt.Insets(2, 16, 3, 14));
+        grnButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                grnButtonActionPerformed(evt);
+            }
+        });
+
+        grnHistoryButton.setBackground(new java.awt.Color(9, 9, 11));
+        grnHistoryButton.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        grnHistoryButton.setForeground(new java.awt.Color(250, 250, 250));
+        grnHistoryButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/icons/grn-history-white.png"))); // NOI18N
+        grnHistoryButton.setText("GRN History");
+        grnHistoryButton.setBorderPainted(false);
+        grnHistoryButton.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        grnHistoryButton.setIconTextGap(16);
+        grnHistoryButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                grnHistoryButtonActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout sideMenuPanelLayout = new javax.swing.GroupLayout(sideMenuPanel);
         sideMenuPanel.setLayout(sideMenuPanelLayout);
         sideMenuPanelLayout.setHorizontalGroup(
             sideMenuPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(sideMenuPanelLayout.createSequentialGroup()
                 .addGap(15, 15, 15)
-                .addGroup(sideMenuPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(logo)
-                    .addComponent(inventoryManageButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(salesManageButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(productManageButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(userManageButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(dashboardButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(warrantyButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(repotingButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(sideMenuPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(grnButton, javax.swing.GroupLayout.PREFERRED_SIZE, 219, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(sideMenuPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(logo)
+                        .addComponent(inventoryManageButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(salesManageButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(productManageButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(userManageButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(dashboardButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(customerManageButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(repotingButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(grnHistoryButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addContainerGap(16, Short.MAX_VALUE))
         );
         sideMenuPanelLayout.setVerticalGroup(
@@ -521,10 +616,14 @@ public class Home extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(inventoryManageButton, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(warrantyButton, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(customerManageButton, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(grnButton, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(grnHistoryButton, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(repotingButton, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(332, Short.MAX_VALUE))
         );
 
         getContentPane().add(sideMenuPanel, java.awt.BorderLayout.LINE_START);
@@ -596,8 +695,11 @@ public class Home extends javax.swing.JFrame {
     }//GEN-LAST:event_productManageButtonActionPerformed
 
     private void repotingButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_repotingButtonActionPerformed
-        removeActivePanel();
         addReporting();
+
+        ReportPanel reportPanel = new gui.dialog.ReportPanel(this, true);
+        reportPanel.setVisible(true);
+
     }//GEN-LAST:event_repotingButtonActionPerformed
 
     private void salesManageButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_salesManageButtonActionPerformed
@@ -610,11 +712,10 @@ public class Home extends javax.swing.JFrame {
         addInventoryManage();
     }//GEN-LAST:event_inventoryManageButtonActionPerformed
 
-    private void warrantyButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_warrantyButtonActionPerformed
+    private void customerManageButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_customerManageButtonActionPerformed
         removeActivePanel();
-        addWarranty();
-    }//GEN-LAST:event_warrantyButtonActionPerformed
-
+        addCustomerManage();
+    }//GEN-LAST:event_customerManageButtonActionPerformed
 
     private void profileImageMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_profileImageMouseClicked
         Profile profile = new gui.popUps.Profile(userid, username, userRole);
@@ -636,6 +737,16 @@ public class Home extends javax.swing.JFrame {
 
     }//GEN-LAST:event_profileImageMouseClicked
 
+    private void grnButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_grnButtonActionPerformed
+        removeActivePanel();
+        addGrn();
+    }//GEN-LAST:event_grnButtonActionPerformed
+
+    private void grnHistoryButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_grnHistoryButtonActionPerformed
+        removeActivePanel();
+        addGrnHistory();
+    }//GEN-LAST:event_grnHistoryButtonActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -653,7 +764,10 @@ public class Home extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel bodyPanel;
     private javax.swing.JPanel containerPanel;
+    private javax.swing.JButton customerManageButton;
     private javax.swing.JButton dashboardButton;
+    private javax.swing.JButton grnButton;
+    private javax.swing.JButton grnHistoryButton;
     private javax.swing.JPanel header;
     private javax.swing.JButton inventoryManageButton;
     private javax.swing.JLabel logo;
@@ -664,6 +778,5 @@ public class Home extends javax.swing.JFrame {
     private javax.swing.JPanel sideMenuPanel;
     private javax.swing.JLabel timeLabel;
     private javax.swing.JButton userManageButton;
-    private javax.swing.JButton warrantyButton;
     // End of variables declaration//GEN-END:variables
 }

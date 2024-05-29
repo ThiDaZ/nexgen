@@ -1,6 +1,5 @@
 package gui;
 
-import gui.popUps.categoryManage;
 import gui.popUps.customerAdd;
 import gui.popUps.productSelect;
 import java.sql.Connection;
@@ -23,7 +22,6 @@ import raven.popup.GlassPanePopup;
 import raven.popup.component.SimplePopupBorder;
 
 public class SaleManage extends javax.swing.JPanel {
-    
 
     /**
      * @return the tableProductId
@@ -42,13 +40,8 @@ public class SaleManage extends javax.swing.JPanel {
         this.tableStockId = tableStockId;
     }
 
-    public void pass() {
-        System.out.println(tableProductId + " " + tableStockId);
-    }
-
     private CustomerBean customerBean = new CustomerBean();
 
-    private int totalQuantity;
     private double total;
     private double paidAmount;
     private double balance;
@@ -59,28 +52,28 @@ public class SaleManage extends javax.swing.JPanel {
         long id = System.currentTimeMillis();
         long in_id = id;
 
+        String invoiceId = String.valueOf(System.currentTimeMillis());
+        System.out.println(invoiceId);
+
         Date dateTime = new Date();
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
         try {
-            MySQL.execute("INSERT INTO `invoice` VALUES('" + in_id + "','" + format.format(dateTime) + "','" + paymentField.getText() + "','" + customerBean.getMobile() + "',1 ,"
+            MySQL.execute("INSERT INTO `invoice` VALUES('" + invoiceId + "','" + format.format(dateTime) + "','" + paymentField.getText() + "','" + customerBean.getMobile() + "',1 ,"
                     + "'" + pm_map.get(paymentComboBox.getSelectedItem().toString()) + "')");
-//            MySQL.iud("INSERT INTO `invoice` VALUES('" + in_id + "','" + format.format(dateTime) + "','" + paidAmount.getText() + "','" + customerBean.getMobile() + "',1 ,"
-//                    + "'" + pm_map.get(paymentComboBox.getSelectedItem().toString()) + "')");
 
             int rowCount = salesTable.getRowCount();
 
             for (int i = 0; i < rowCount; i++) {
-                String barcode = String.valueOf(salesTable.getValueAt(i, 0));
+                String stockId = String.valueOf(salesTable.getValueAt(i, 0));
                 int qty = Integer.parseInt(String.valueOf(salesTable.getValueAt(i, 6)));
 
                 //Invoice Item Insert
-                MySQL.execute("INSERT INTO `invoice_item`(`qty`,`stock_barcode`,`in_id`,warranty_id) VALUES ('" + qty + "','" + barcode + "','" + in_id + "',1)");
-//                MySQL.iud("INSERT INTO `invoice_item`(`qty`,`stock_barcode`,`in_id`,warranty_id) VALUES ('" + qty + "','" + barcode + "','" + in_id + "',1)");
+                MySQL.execute("INSERT INTO `invoice_item`(`qty`,`stock_id`,`invoice_id`,warranty_id) VALUES ('" + qty + "','" + stockId + "','" + invoiceId + "',1)");
 
                 //Stock Update
-                MySQL.execute("UPDATE `stock` SET `qty` = `qty`-'" + qty + "' WHERE `barcode` = '" + barcode + "'");
-//                MySQL.iud("UPDATE `stock` SET `qty` = `qty`-'" + qty + "' WHERE `barcode` = '" + barcode + "'");
+                MySQL.execute("UPDATE `stock` SET `qty` = `qty`-'" + qty + "' WHERE `id` = '" + stockId + "'");
+//                MySQL.iud("UPDATE `stock` SET `qty` = `qty`-'" + qty + "' WHERE `id` = '" + stockId + "'");
             }
 
             double newPoints = 0;
@@ -94,7 +87,7 @@ public class SaleManage extends javax.swing.JPanel {
                 MySQL.execute("UPDATE `customer` SET `points` = `points`+'" + newPoints + "' WHERE `mobile` = '" + customerBean.getMobile() + "'");
 //                MySQL.iud("UPDATE `customer` SET `points` = `points`+'" + newPoints + "' WHERE `mobile` = '" + customerBean.getMobile() + "'");
             }
-            String reportPath = "src//Resources//NexGen.jasper";
+            String reportPath = "/report//NexGen.jasper";
 
             HashMap<String, Object> map = new HashMap<>();
             map.put("Parameter1", "Danushka");
@@ -113,9 +106,10 @@ public class SaleManage extends javax.swing.JPanel {
 
             map.put("Parameter9", balanceField.getText());
 
-            //   Class.forName("com.mysql.cj.jdbc.Driver");
+            Class.forName("com.mysql.cj.jdbc.Driver");
             Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/nexgen", "root", "oni-chan99");
-            JasperPrint jasperPrint = JasperFillManager.fillReport(reportPath, map, connection);
+//            JasperPrint jasperPrint = JasperFillManager.fillReport(reportPath, map, connection);
+            JasperPrint jasperPrint = JasperFillManager.fillReport(getClass().getResourceAsStream("/report/NexGen.jasper"), map);
 
 //       JasperPrint jasperPrint = JasperFillManager.fillReport(reportPath, map, connection);
             JasperViewer.viewReport(jasperPrint, false);
@@ -127,7 +121,7 @@ public class SaleManage extends javax.swing.JPanel {
     }
 
     public void calculate() {
-        totalQuantity = 0;
+//        totalQuantity = 0;
         total = 0;
 
         int rowCount = salesTable.getRowCount();
@@ -137,7 +131,7 @@ public class SaleManage extends javax.swing.JPanel {
             String tableQty = String.valueOf(salesTable.getValueAt(i, 4));
             String tablePrize = String.valueOf(salesTable.getValueAt(i, 5));
 
-            totalQuantity += Integer.parseInt(tableQty);
+//            totalQuantity += Integer.parseInt(tableQty);
             total += (Double.parseDouble(tablePrize) * Integer.parseInt(tableQty));
 
         }
@@ -235,6 +229,7 @@ public class SaleManage extends javax.swing.JPanel {
                 v.add(rs.getString("category"));
                 v.add(qty);
                 v.add(rs.getString("selling_price"));
+                v.add(String.valueOf(rs.getInt("stock.id")));
 
                 model.addRow(v);
 
@@ -245,6 +240,21 @@ public class SaleManage extends javax.swing.JPanel {
             e.printStackTrace();
         }
 
+    }
+
+    public void getCustomer(String mobile, String name, String points) {
+        System.out.println(mobile);
+        System.out.println(name);
+        System.out.println(points);
+
+        customerLabel.setText("Customer : " + name);
+        mobileField.setText(mobile);
+        pointField.setText(points);
+
+        int intPoints = Integer.parseInt(points);
+
+        customerBean.setMobile(mobile);
+        customerBean.setPoint(intPoints);
     }
 
     /**
@@ -281,6 +291,11 @@ public class SaleManage extends javax.swing.JPanel {
         addCustomerButton = new javax.swing.JButton();
         customerLabel = new javax.swing.JLabel();
         reedemCheckbox = new javax.swing.JCheckBox();
+        jLabel6 = new javax.swing.JLabel();
+        mobileField = new javax.swing.JTextField();
+        jLabel8 = new javax.swing.JLabel();
+        pointField = new javax.swing.JTextField();
+        jButton1 = new javax.swing.JButton();
         dailyInvoiceLabel = new javax.swing.JLabel();
 
         setMinimumSize(new java.awt.Dimension(1350, 852));
@@ -294,9 +309,17 @@ public class SaleManage extends javax.swing.JPanel {
 
             },
             new String [] {
-                "Product ID", "Name", "Brand", "Category", "QTY", "Selling Price"
+                "Product ID", "Name", "Brand", "Category", "QTY", "Selling Price", "Stock ID"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         salesTable.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 salesTableKeyReleased(evt);
@@ -311,6 +334,7 @@ public class SaleManage extends javax.swing.JPanel {
             }
         });
 
+        balanceField.setEditable(false);
         balanceField.setPreferredSize(new java.awt.Dimension(68, 27));
 
         jLabel2.setText("Balance");
@@ -321,9 +345,15 @@ public class SaleManage extends javax.swing.JPanel {
                 paymentFieldActionPerformed(evt);
             }
         });
+        paymentField.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                paymentFieldKeyReleased(evt);
+            }
+        });
 
         jLabel3.setText("Payment");
 
+        totalPayField.setEditable(false);
         totalPayField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 totalPayFieldActionPerformed(evt);
@@ -335,6 +365,11 @@ public class SaleManage extends javax.swing.JPanel {
         jLabel5.setText("Payment Method");
 
         paymentComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        paymentComboBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                paymentComboBoxActionPerformed(evt);
+            }
+        });
 
         addProductButton.setText("Add Product");
         addProductButton.addActionListener(new java.awt.event.ActionListener() {
@@ -359,6 +394,16 @@ public class SaleManage extends javax.swing.JPanel {
             }
         });
 
+        jLabel6.setText("Mobile ");
+
+        mobileField.setEditable(false);
+
+        jLabel8.setText("Points");
+
+        pointField.setEditable(false);
+
+        jButton1.setText("Remove");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -378,14 +423,22 @@ public class SaleManage extends javax.swing.JPanel {
                                 .addGap(21, 21, 21)
                                 .addComponent(jLabel4)
                                 .addGap(18, 18, 18)
-                                .addComponent(totalPayField, javax.swing.GroupLayout.PREFERRED_SIZE, 206, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(totalPayField, javax.swing.GroupLayout.PREFERRED_SIZE, 206, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(99, 99, 99)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel2)
+                                    .addComponent(jLabel3)))
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(0, 0, Short.MAX_VALUE)
+                                .addGap(6, 6, 6)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel6)
+                                    .addComponent(jLabel8))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(mobileField, javax.swing.GroupLayout.DEFAULT_SIZE, 124, Short.MAX_VALUE)
+                                    .addComponent(pointField))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(reedemCheckbox)))
-                        .addGap(99, 99, 99)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel2)
-                            .addComponent(jLabel3))
                         .addGap(18, 18, 18)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(printInvoiceButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 206, Short.MAX_VALUE)
@@ -393,6 +446,8 @@ public class SaleManage extends javax.swing.JPanel {
                             .addComponent(balanceField, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(addProductButton, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jButton1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(customerLabel)))
                 .addContainerGap())
@@ -403,7 +458,8 @@ public class SaleManage extends javax.swing.JPanel {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(addProductButton, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(customerLabel))
+                    .addComponent(customerLabel)
+                    .addComponent(jButton1))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 537, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
@@ -416,12 +472,23 @@ public class SaleManage extends javax.swing.JPanel {
                     .addComponent(paymentComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(addCustomerButton, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(balanceField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel2)
-                    .addComponent(reedemCheckbox))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(printInvoiceButton, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(balanceField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel2))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(printInvoiceButton, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(reedemCheckbox)))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel6)
+                            .addComponent(mobileField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(pointField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel8))))
                 .addContainerGap())
         );
 
@@ -451,7 +518,7 @@ public class SaleManage extends javax.swing.JPanel {
                     .addComponent(dailyInvoiceLabel))
                 .addGap(35, 35, 35)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(24, Short.MAX_VALUE))
+                .addContainerGap(30, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -465,6 +532,8 @@ public class SaleManage extends javax.swing.JPanel {
 
     private void addCustomerButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addCustomerButtonActionPerformed
         customerAdd customeradd = new gui.popUps.customerAdd();
+        customeradd.setSalesmange(this);
+
         DefaultOption option = new DefaultOption() {
             @Override
             public boolean closeWhenClickOutside() {
@@ -484,28 +553,29 @@ public class SaleManage extends javax.swing.JPanel {
     }//GEN-LAST:event_addCustomerButtonActionPerformed
 
     private void reedemCheckboxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_reedemCheckboxActionPerformed
-        // TODO add your handling code here:
+        calculate();
+        calculatePayment();
     }//GEN-LAST:event_reedemCheckboxActionPerformed
 
     private void printInvoiceButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_printInvoiceButtonActionPerformed
-//        if (customerBean.getMobile().equals("None")) {
-//
-//            int option = JOptionPane.showConfirmDialog(this, "Do you want to register customer?", "Message", JOptionPane.YES_NO_OPTION);
-//
-//            if (option == JOptionPane.YES_OPTION) {
-//                mobileField.requestFocus();
-//            } else {
-//                ///       customer = none
-//                processInvoice();
-//
-//            }
-//
-//        } else {
-//
-//            //     customer != none
-//            processInvoice();
-//
-//        }
+        if (customerBean.getMobile().equals("None")) {
+
+            int option = JOptionPane.showConfirmDialog(this, "Do you want to register customer?", "Message", JOptionPane.YES_NO_OPTION);
+
+            if (option == JOptionPane.YES_OPTION) {
+                mobileField.requestFocus();
+            } else {
+//              customer = none
+                processInvoice();
+
+            }
+
+        } else {
+
+            //     customer != none
+            processInvoice();
+
+        }
     }//GEN-LAST:event_printInvoiceButtonActionPerformed
 
     private void addProductButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addProductButtonActionPerformed
@@ -532,6 +602,16 @@ public class SaleManage extends javax.swing.JPanel {
         calculate();
     }//GEN-LAST:event_salesTableKeyReleased
 
+    private void paymentComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_paymentComboBoxActionPerformed
+        calculate();
+
+    }//GEN-LAST:event_paymentComboBoxActionPerformed
+
+    private void paymentFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_paymentFieldKeyReleased
+        calculate();
+
+    }//GEN-LAST:event_paymentFieldKeyReleased
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton addCustomerButton;
@@ -539,15 +619,20 @@ public class SaleManage extends javax.swing.JPanel {
     private javax.swing.JTextField balanceField;
     private javax.swing.JLabel customerLabel;
     private javax.swing.JLabel dailyInvoiceLabel;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel8;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTextField mobileField;
     private javax.swing.JComboBox<String> paymentComboBox;
     private javax.swing.JTextField paymentField;
+    private javax.swing.JTextField pointField;
     private javax.swing.JButton printInvoiceButton;
     private javax.swing.JCheckBox reedemCheckbox;
     private javax.swing.JTable salesTable;
